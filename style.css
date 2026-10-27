@@ -1,0 +1,823 @@
+/* Registered so the sky can fade between states. They are set on the .sky
+   layer only (by sky.js), so a fade repaints that layer and nothing else. */
+@property --sky-top { syntax: "<color>"; inherits: true; initial-value: #c6dbee; }
+@property --sky-bottom { syntax: "<color>"; inherits: true; initial-value: #ecf1ee; }
+@property --glow { syntax: "<color>"; inherits: true; initial-value: #fff4d8; }
+@property --glow-a { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --sun-a { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --stars { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --sun-x { syntax: "<percentage>"; inherits: true; initial-value: 50%; }
+@property --sun-y { syntax: "<percentage>"; inherits: true; initial-value: 20%; }
+
+:root {
+  --dial: #e3e5e0;
+  --dial-hi: #f3f4f0;
+  --dial-sunk: #d7dad4;
+  --rule: #b6bcc4;
+  --ink: #1a2744;
+  --ink-soft: #505b70;
+  --day: #f6f7f3;
+  --night: #1a2744;
+  --on-day: #1a2744;
+  --on-night: #d9dee8;
+  --on-twilight: #1a2744;
+  --home: #c3291c;
+  --blued: #2b54b6;
+  --sun: #fffaf0;
+  --dial-shadow: 0 34px 70px -24px rgb(26 39 68 / 0.38), 0 2px 6px rgb(26 39 68 / 0.12);
+
+  --gutter: clamp(16px, 4vw, 56px);
+  color-scheme: light;
+}
+
+/* Night tokens, used when sky.js says it's night in the selected city, and
+   as the dark-mode fallback before it has run. */
+:root[data-theme="night"] {
+  --dial: #111829;
+  --dial-hi: #1e2945;
+  --dial-sunk: #1a2338;
+  --rule: #34405a;
+  --ink: #dfe2dc;
+  --ink-soft: #a9b1c0;
+  --day: #b9bfc9;
+  --night: #070b16;
+  --on-day: #111829;
+  --on-night: #c3cad6;
+  --on-twilight: #edf0f5;
+  --home: #ff6a55;
+  --blued: #86a6ff;
+  --sun: #9db4ff;
+  --dial-shadow: 0 0 90px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.04);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --dial: #111829;
+    --dial-hi: #1e2945;
+    --dial-sunk: #1a2338;
+    --rule: #34405a;
+    --ink: #dfe2dc;
+    --ink-soft: #a9b1c0;
+    --day: #b9bfc9;
+    --night: #070b16;
+    --on-day: #111829;
+    --on-night: #c3cad6;
+    --on-twilight: #edf0f5;
+    --home: #ff6a55;
+    --blued: #86a6ff;
+    --sun: #9db4ff;
+    color-scheme: dark;
+  }
+}
+
+/* Day/night theme flips crossfade the whole page on the compositor. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in-out;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  background: var(--dial);
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  color: var(--ink);
+  font-family: Archivo, "Arial Narrow", system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* The sky over the selected city: a top-to-bottom wash, a horizon glow at
+   dawn and dusk, and a soft sun that crosses the page during the day. */
+.sky,
+.sky::after {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .sky {
+    --sky-top: #070b16;
+    --sky-bottom: #111a30;
+  }
+}
+
+.sky {
+  background:
+    radial-gradient(ellipse 55% 45% at var(--sun-x) var(--sun-y),
+      color-mix(in srgb, var(--sun) calc(var(--sun-a) * 55%), transparent), transparent 70%),
+    radial-gradient(ellipse 85% 38% at 50% 100%,
+      color-mix(in srgb, var(--glow) calc(var(--glow-a) * 100%), transparent), transparent 75%),
+    linear-gradient(var(--sky-top), var(--sky-bottom));
+}
+
+.sky.is-fading {
+  transition-property: --sky-top, --sky-bottom, --glow, --glow-a, --sun-a, --stars, --sun-x, --sun-y;
+  transition-duration: 1.2s;
+  transition-timing-function: ease-in-out;
+}
+
+/* Stars, tiled at uneven sizes so the pattern doesn't read as a grid. */
+.sky::after {
+  content: "";
+  background-image:
+    radial-gradient(1.4px 1.4px at 37px 52px, #fff 50%, transparent),
+    radial-gradient(1px 1px at 161px 23px, #fff 50%, transparent),
+    radial-gradient(1.8px 1.8px at 88px 141px, #fff 50%, transparent),
+    radial-gradient(1px 1px at 219px 187px, #fff 50%, transparent),
+    radial-gradient(1.2px 1.2px at 301px 96px, #fff 50%, transparent);
+  background-size: 211px 211px, 263px 263px, 347px 347px, 239px 239px, 401px 401px;
+  opacity: calc(var(--stars) * 0.55);
+  mask-image: linear-gradient(#000 25%, transparent 80%);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:focus-visible {
+  outline: 2px solid var(--blued);
+  outline-offset: 2px;
+}
+
+/* Header */
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px var(--gutter);
+}
+
+.top h1 {
+  margin: 0;
+  font-size: 1.3125rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+}
+
+.picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.picker-field {
+  position: relative;
+  color: var(--ink);
+}
+
+.picker-field::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 13px;
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.picker select {
+  appearance: none;
+  min-height: 34px;
+  padding: 5px 36px 5px 12px;
+  border: 1px solid var(--ink);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.picker select option {
+  background: var(--dial);
+  color: var(--ink);
+}
+
+.format {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--ink);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.format label {
+  position: relative;
+  cursor: pointer;
+}
+
+.format input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.format span {
+  display: block;
+  padding: 6px 14px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-stretch: 90%;
+}
+
+.format input:checked + span {
+  background: var(--ink);
+  color: var(--dial);
+}
+
+.format input:focus-visible + span {
+  outline: 2px solid var(--blued);
+  outline-offset: -4px;
+}
+
+/* Layout */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
+  align-items: center;
+  gap: clamp(32px, 5vw, 88px);
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--gutter) 48px;
+}
+
+@media (max-width: 899px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Dial */
+
+.dial {
+  container: dial / inline-size;
+  position: relative;
+  width: min(100%, 720px, max(300px, calc(100svh - 150px)));
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+
+/* The dial is an object in front of the sky, so it casts a soft shadow. */
+.dial::before {
+  content: "";
+  position: absolute;
+  inset: 0.3%;
+  border-radius: 50%;
+  box-shadow: var(--dial-shadow);
+  pointer-events: none;
+}
+
+.dial-svg {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.bezel {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.5;
+}
+
+/* Dial finish */
+
+.face {
+  fill: var(--dial);
+}
+
+.disc {
+  fill: url(#sheen);
+}
+
+.sunburst line {
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  opacity: 0.05;
+}
+
+.track line {
+  stroke: var(--rule);
+  stroke-width: 1.5;
+}
+
+.track .is-five {
+  stroke: var(--ink-soft);
+  stroke-width: 2.5;
+}
+
+.seconds {
+  fill: var(--ink);
+  transition: transform 0.28s cubic-bezier(0.4, 2.2, 0.6, 1);
+}
+
+.is-planning .seconds {
+  visibility: hidden;
+}
+
+.slot-tick {
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+.fine-tick {
+  stroke: var(--rule);
+  stroke-width: 1.2;
+}
+
+.home-tick {
+  stroke: var(--home);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.glyph.sun circle,
+.glyph.sun line {
+  fill: none;
+  stroke: var(--on-day);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.moon-lit {
+  fill: var(--on-night);
+}
+
+.moon-shade {
+  fill: var(--night);
+}
+
+.rule {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 1.5;
+}
+
+.tick {
+  stroke-width: 2.5;
+}
+
+.tick.is-half {
+  stroke-width: 1.5;
+}
+
+.tick.on-day {
+  stroke: var(--on-day);
+}
+
+.tick.on-night {
+  stroke: var(--on-night);
+}
+
+.tick.on-twilight {
+  stroke: var(--on-twilight);
+}
+
+.numeral {
+  font-size: 30px;
+  font-stretch: 75%;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.numeral.on-day {
+  fill: var(--on-day);
+}
+
+.numeral.on-night {
+  fill: var(--on-night);
+}
+
+.numeral.on-twilight {
+  fill: var(--on-twilight);
+  font-weight: 650;
+}
+
+.city-label {
+  fill: var(--ink);
+  font-size: 25px;
+  font-stretch: 78%;
+  font-weight: 450;
+  text-anchor: middle;
+  transition: opacity 0.25s, fill 0.25s;
+}
+
+.city-label.is-home {
+  fill: var(--home);
+  font-weight: 750;
+}
+
+.city-label.short {
+  display: none;
+  font-size: 34px;
+  font-stretch: 90%;
+  font-weight: 550;
+}
+
+@container dial (max-width: 460px) {
+  .city-label.long {
+    display: none;
+  }
+
+  .city-label.short {
+    display: inline;
+  }
+
+  .numeral {
+    font-size: 40px;
+  }
+}
+
+.city-label[data-tz] {
+  cursor: pointer;
+}
+
+.city-label[data-tz]:hover {
+  fill: var(--blued);
+}
+
+/* Red marks GMT+7; away from home the 12 o'clock pointers turn to ink. */
+.ref-pointer {
+  fill: var(--home);
+}
+
+.is-away .ref-pointer {
+  fill: var(--ink);
+}
+
+.reader {
+  opacity: 0;
+  transition: transform 0.55s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.2s;
+}
+
+.reader line {
+  stroke: var(--blued);
+  stroke-width: 3;
+}
+
+.reader path {
+  fill: var(--blued);
+}
+
+.is-reading .reader {
+  opacity: 1;
+}
+
+.is-reading .city-label:not(.is-target, .is-home) {
+  opacity: 0.28;
+}
+
+.city-label.is-target {
+  fill: var(--blued);
+  font-weight: 650;
+}
+
+/* The selected city, in the middle of the dial */
+
+.home {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.home p {
+  margin: 0;
+}
+
+.home-city {
+  font-size: max(14px, 3.4cqi);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.home-city.is-home {
+  color: var(--home);
+}
+
+.home-time {
+  position: relative;
+  margin: 0.4cqi 0 1.2cqi;
+  font-size: 18cqi;
+  font-stretch: 62%;
+  font-weight: 250;
+  line-height: 0.92;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.home-hang {
+  position: absolute;
+  top: 0.13em;
+  left: calc(100% + 0.05em);
+  display: grid;
+  font-size: 0.19em;
+  font-stretch: 75%;
+  font-weight: 450;
+  line-height: 1.15;
+  text-align: left;
+}
+
+.home-date {
+  color: var(--ink-soft);
+  font-size: max(13px, 2.8cqi);
+  line-height: 1.3;
+}
+
+.caption {
+  max-width: 46ch;
+  margin: 20px auto 0;
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.link-button {
+  margin-left: 4px;
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: var(--blued);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* City list */
+
+.elsewhere h2 {
+  margin: 32px 0 6px;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.elsewhere h2:first-child {
+  margin-top: 0;
+}
+
+.cities {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--rule);
+}
+
+.cities li {
+  border-top: 1px solid var(--rule);
+}
+
+.city {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr) auto;
+  grid-template-areas:
+    "swatch name time"
+    ". gap time";
+  column-gap: 14px;
+  align-items: baseline;
+  width: 100%;
+  padding: 10px 10px 11px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.city:hover,
+.city:focus {
+  background: var(--dial-sunk);
+}
+
+.city[aria-pressed="true"] {
+  background: var(--dial-sunk);
+  box-shadow: inset 4px 0 0 var(--ink);
+}
+
+.city.is-home .city-name {
+  color: var(--home);
+}
+
+.city:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.city:focus-visible {
+  outline-offset: -2px;
+}
+
+.city:hover .city-name,
+.city:focus .city-name {
+  color: var(--blued);
+}
+
+.swatch {
+  grid-area: swatch;
+  align-self: center;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--rule);
+}
+
+.city-name {
+  grid-area: name;
+  font-size: 1.125rem;
+  font-weight: 550;
+  line-height: 1.3;
+}
+
+.city-gap {
+  grid-area: gap;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+.city-time {
+  grid-area: time;
+  align-self: center;
+  font-size: 1.75rem;
+  font-stretch: 72%;
+  font-weight: 400;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.city-time .ampm {
+  margin-left: 0.2em;
+  font-size: 0.5em;
+  font-stretch: 85%;
+  font-weight: 500;
+}
+
+.hint {
+  margin: 14px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+
+.hint-touch {
+  display: none;
+}
+
+@media (hover: none) {
+  .hint-pointer {
+    display: none;
+  }
+
+  .hint-touch {
+    display: inline;
+  }
+}
+
+/* Plan a time */
+
+.plan {
+  width: min(100%, 480px);
+  margin: 28px auto 0;
+}
+
+.plan-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+
+.plan-head label {
+  font-weight: 600;
+}
+
+.plan-head output {
+  flex: 1;
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.is-planning .plan-head output {
+  color: var(--blued);
+}
+
+.plan-head button {
+  min-height: 32px;
+  padding: 4px 12px;
+  border: 1px solid var(--ink);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.plan-head button:hover {
+  background: var(--dial-sunk);
+}
+
+.plan input {
+  display: block;
+  width: 100%;
+  height: 32px;
+  margin: 6px 0 2px;
+  accent-color: var(--blued);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.plan-scale {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+}
+
+/* While planning, seconds would be fiction, so hide them. */
+.is-planning #home-sec {
+  visibility: hidden;
+}
+
+.is-planning .home-time {
+  color: var(--blued);
+}
+
+@media (pointer: coarse) {
+  .format span {
+    padding: 11px 16px;
+  }
+
+  .picker select {
+    min-height: 44px;
+  }
+
+  .plan-head button {
+    min-height: 44px;
+  }
+
+  .plan input {
+    height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reader,
+  .city-label,
+  .seconds {
+    transition: none;
+  }
+}

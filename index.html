@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>World time</title>
+  <meta name="description" content="A world clock read from GMT+7, Western Indonesia Time.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#c6dbee">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script src="sky.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="sky" id="sky" aria-hidden="true"></div>
+  <header class="top">
+    <h1>World time</h1>
+    <div class="controls">
+      <label class="picker">
+        <span>Clock for</span>
+        <span class="picker-field"><select id="picker"></select></span>
+      </label>
+      <fieldset class="format">
+        <legend class="sr-only">Clock format</legend>
+        <label><input type="radio" name="format" value="24" checked><span>24-hour</span></label>
+        <label><input type="radio" name="format" value="12"><span>12-hour</span></label>
+      </fieldset>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="dial-col" aria-labelledby="home-city">
+      <div class="dial">
+        <svg class="dial-svg" id="dial" viewBox="-500 -500 1000 1000" aria-hidden="true" focusable="false">
+          <defs>
+            <radialGradient id="sheen" cx="0" cy="-90" r="320" gradientUnits="userSpaceOnUse">
+              <stop offset="0" style="stop-color: var(--dial-hi)"/>
+              <stop offset="1" style="stop-color: var(--dial)"/>
+            </radialGradient>
+            <g id="paths"></g>
+          </defs>
+
+          <circle class="face" r="496"/>
+          <circle class="disc" r="300"/>
+          <g class="sunburst" id="sunburst"></g>
+          <g class="track" id="track"></g>
+          <g class="seconds" id="seconds">
+            <path d="M0 -268 L-7 -252 L7 -252 Z"/>
+          </g>
+
+          <g id="ring"></g>
+          <g id="numerals"></g>
+          <circle class="rule" r="300"/>
+          <circle class="rule" r="392"/>
+
+          <g id="turn"></g>
+          <circle class="bezel" r="496"/>
+          <g id="cities"></g>
+
+          <path class="ref-pointer" d="M-10 -406 L10 -406 L0 -384 Z"/>
+          <path class="ref-pointer" d="M-9 -290 L9 -290 L0 -310 Z"/>
+          <g class="reader" id="reader">
+            <line x1="0" y1="-304" x2="0" y2="-396"/>
+            <path d="M-10 -406 L10 -406 L0 -384 Z"/>
+          </g>
+        </svg>
+
+        <div class="home" role="timer" aria-live="off">
+          <p class="home-city" id="home-city">Jakarta</p>
+          <p class="home-time">
+            <time id="home-time">--:--</time>
+            <span class="home-hang">
+              <span id="home-sec">--</span>
+              <span id="home-ampm" hidden></span>
+            </span>
+          </p>
+          <p class="home-date" id="home-date"></p>
+        </div>
+      </div>
+
+      <p class="caption">
+        <span id="caption">Western Indonesia Time (WIB), GMT+7. Bangkok, Hanoi and Phnom&nbsp;Penh share this time.</span>
+        <button type="button" class="link-button" id="go-home" hidden>Back to Jakarta</button>
+      </p>
+
+      <div class="plan">
+        <div class="plan-head">
+          <label for="plan">Plan a time</label>
+          <output id="plan-out" for="plan">Showing now</output>
+          <button type="button" id="plan-reset" hidden>Back to now</button>
+        </div>
+        <input type="range" id="plan" min="-720" max="720" step="15" value="0">
+        <div class="plan-scale" aria-hidden="true"><span>12 hours earlier</span><span>Now</span><span>12 hours later</span></div>
+      </div>
+    </section>
+
+    <section class="elsewhere" aria-label="Cities">
+      <h2 id="indonesia-head">Indonesia</h2>
+      <ul class="cities" id="list-indonesia" aria-labelledby="indonesia-head"></ul>
+      <h2 id="world-head">Around the world</h2>
+      <ul class="cities" id="list-world" aria-labelledby="world-head"></ul>
+      <p class="hint">
+        <span class="hint-pointer">Point at a city to find it on the dial. Click it to set the clock there.</span>
+        <span class="hint-touch">Tap a city to set the clock there.</span>
+      </p>
+    </section>
+  </main>
+</body>
+</html>
