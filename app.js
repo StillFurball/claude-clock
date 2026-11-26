@@ -77,6 +77,36 @@ const LISTS = [
       { name: 'Los Angeles', tz: 'America/Los_Angeles' },
     ],
   },
+  {
+    el: document.getElementById('list-f1'),
+    sort: false,
+    places: [
+      { name: 'Sakhir', tz: 'Asia/Bahrain', code: 'BAH', zone: 'R1 Bahrain · 12–14 Mar' },
+      { name: 'Jeddah', tz: 'Asia/Riyadh', code: 'JED', zone: 'R2 Saudi Arabia · 19–21 Mar' },
+      { name: 'Melbourne', tz: 'Australia/Melbourne', code: 'MEL', zone: 'R3 Australia · 2–4 Apr' },
+      { name: 'Suzuka', tz: 'Asia/Tokyo', code: 'SZK', zone: 'R4 Japan · 9–11 Apr' },
+      { name: 'Shanghai', tz: 'Asia/Shanghai', code: 'SHA', zone: 'R5 China · 16–18 Apr' },
+      { name: 'Miami', tz: 'America/New_York', code: 'MIA', zone: 'R6 · 30 Apr–2 May' },
+      { name: 'Montréal', tz: 'America/Toronto', code: 'YUL', zone: 'R7 Canada · 21–23 May' },
+      { name: 'Monaco', tz: 'Europe/Monaco', code: 'MCO', zone: 'R8 · 4–6 Jun' },
+      { name: 'Portimão', tz: 'Europe/Lisbon', code: 'PRM', zone: 'R9 Portugal · 18–20 Jun' },
+      { name: 'Silverstone', tz: 'Europe/London', code: 'SIL', zone: 'R10 Great Britain · 2–4 Jul' },
+      { name: 'Spielberg', tz: 'Europe/Vienna', code: 'SPB', zone: 'R11 Austria · 9–11 Jul' },
+      { name: 'Spa-Francorchamps', tz: 'Europe/Brussels', code: 'SPA', zone: 'R12 Belgium · 23–25 Jul' },
+      { name: 'Budapest', tz: 'Europe/Budapest', code: 'BUD', zone: 'R13 Hungary · 30 Jul–1 Aug' },
+      { name: 'Monza', tz: 'Europe/Rome', code: 'MNZ', zone: 'R14 Italy · 3–5 Sep' },
+      { name: 'Madrid', tz: 'Europe/Madrid', code: 'MAD', zone: 'R15 Spain · 10–12 Sep' },
+      { name: 'Baku', tz: 'Asia/Baku', code: 'BAK', zone: 'R16 Azerbaijan · 24–26 Sep' },
+      { name: 'Istanbul', tz: 'Europe/Istanbul', code: 'IST', zone: 'R17 Turkey · 1–3 Oct' },
+      { name: 'Singapore', tz: 'Asia/Singapore', code: 'SIN', zone: 'R18 · 8–10 Oct' },
+      { name: 'Austin', tz: 'America/Chicago', code: 'AUS', zone: 'R19 USA · 22–24 Oct' },
+      { name: 'Mexico City', tz: 'America/Mexico_City', code: 'MEX', zone: 'R20 · 29–31 Oct' },
+      { name: 'São Paulo', tz: 'America/Sao_Paulo', code: 'SAO', zone: 'R21 · 5–7 Nov' },
+      { name: 'Las Vegas', tz: 'America/Los_Angeles', code: 'LAS', zone: 'R22 · 18–20 Nov' },
+      { name: 'Lusail', tz: 'Asia/Qatar', code: 'LUS', zone: 'R23 Qatar · 3–5 Dec' },
+      { name: 'Abu Dhabi', tz: 'Asia/Dubai', code: 'AUH', zone: 'R24 · 10–12 Dec' },
+    ],
+  },
 ];
 
 // Only offered in the "Clock for" menu.
@@ -91,12 +121,28 @@ const EXTRA = [
   place('Toronto', 'America/Toronto'),
 ];
 
-// Every selectable place, one per time zone.
+// Every selectable place. The first city in a time zone claims its IANA id
+// (so #Asia/Tokyo keeps working); additional cities in the same zone get a
+// distinct id so selecting them shows their own name on the dial.
 const PLACES = new Map();
-for (const p of [...LISTS.flatMap((l) => l.places), ...RING.flatMap(([, ...c]) => c), ...EXTRA]) {
-  const known = PLACES.get(p.tz);
-  if (!known) PLACES.set(p.tz, { name: p.name, tz: p.tz, code: p.code });
-  else known.code ??= p.code;
+const PRIMARY_LISTS = LISTS.filter((l) => l.el.id !== 'list-f1');
+const SECONDARY_LISTS = LISTS.filter((l) => l.el.id === 'list-f1');
+const ALL_SOURCES = [
+  ...PRIMARY_LISTS.flatMap((l) => l.places),
+  ...RING.flatMap(([, ...c]) => c),
+  ...EXTRA,
+  ...SECONDARY_LISTS.flatMap((l) => l.places),
+];
+for (const p of ALL_SOURCES) {
+  const existing = [...PLACES.values()].find((k) => k.tz === p.tz && k.name === p.name);
+  if (existing) {
+    existing.code ??= p.code;
+    p.id = existing.id;
+  } else {
+    const id = PLACES.has(p.tz) ? `${p.tz}:${p.name}` : p.tz;
+    p.id = id;
+    PLACES.set(id, { id, name: p.name, tz: p.tz, code: p.code });
+  }
 }
 
 const $ = (id) => document.getElementById(id);
@@ -416,7 +462,7 @@ function nameSlots(now) {
         label.firstChild.textContent = names[j];
         changed = true;
       }
-      if (pick) label.dataset.tz = pick.tz;
+      if (pick) label.dataset.tz = pick.id;
       else delete label.dataset.tz;
     });
   });
@@ -516,7 +562,7 @@ function placeReader() {
 
 function showOnDial(p) {
   clearTimeout(clearTimer);
-  if (p.tz === ref.tz) {
+  if (p.id === ref.id) {
     reading = null;
     clearDial(true);
     return;
@@ -594,7 +640,7 @@ function buildLists() {
         if (document.activeElement !== row) hide();
       });
       row.addEventListener('blur', hide);
-      row.addEventListener('click', () => selectPlace(p.tz));
+      row.addEventListener('click', () => selectPlace(p.id));
       list.el.append(item);
     }
   }
@@ -610,7 +656,7 @@ function renderLists(now, refZone) {
       setText(p.ampm, ampm);
       p.swatch.style.background = skyColor(z.h + z.m / 60);
 
-      const selected = p.tz === ref.tz;
+      const selected = p.id === ref.id;
       p.row.setAttribute('aria-pressed', String(selected));
       let text;
       if (selected) {
@@ -626,10 +672,12 @@ function renderLists(now, refZone) {
       setText(p.gap, text);
     }
 
-    // Furthest ahead first; only touch the DOM when the order actually changes.
-    const sorted = [...list.places].sort((a, b) => b.offset - a.offset);
-    if (sorted.some((p, i) => list.el.children[i] !== p.item)) {
-      list.el.append(...sorted.map((p) => p.item));
+    if (list.sort !== false) {
+      // Furthest ahead first; only touch the DOM when the order actually changes.
+      const sorted = [...list.places].sort((a, b) => b.offset - a.offset);
+      if (sorted.some((p, i) => list.el.children[i] !== p.item)) {
+        list.el.append(...sorted.map((p) => p.item));
+      }
     }
   }
   if (reading) showOnDial(reading);
@@ -643,12 +691,12 @@ function renderPicker(now) {
   const entries = [...PLACES.values()]
     .map((p) => ({ ...p, offset: zoned(p.tz, now).offset }))
     .sort((a, b) => b.offset - a.offset || a.name.localeCompare(b.name));
-  const signature = entries.map((e) => `${e.tz}${e.offset}`).join('|');
+  const signature = entries.map((e) => `${e.id}${e.offset}`).join('|');
   if (signature !== pickerSignature) {
     pickerSignature = signature;
-    picker.replaceChildren(...entries.map((e) => new Option(`${e.name} (${gmtLabel(e.offset)})`, e.tz)));
+    picker.replaceChildren(...entries.map((e) => new Option(`${e.name} (${gmtLabel(e.offset)})`, e.id)));
   }
-  picker.value = ref.tz;
+  picker.value = ref.id;
 }
 
 /* The selected city */
@@ -680,14 +728,15 @@ function renderHome(refZone) {
   if (!planShift) document.title = `${hm}${ampm ? ` ${ampm}` : ''} in ${ref.name}`;
 }
 
-function selectPlace(tz, animate = true) {
-  const next = PLACES.get(tz);
+function selectPlace(id, animate = true) {
+  const next = PLACES.get(id);
   if (!next || next === ref) return;
   ref = next;
   try {
-    history.replaceState(null, '', tz === HOME_TZ ? location.pathname + location.search : `#${tz}`);
+    const hash = `#${id.replace(/ /g, '%20')}`;
+    history.replaceState(null, '', id === HOME_TZ ? location.pathname + location.search : hash);
   } catch {}
-  if (reading && reading.tz === tz) {
+  if (reading && reading.id === id) {
     reading = null;
     clearDial(true);
   }

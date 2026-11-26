@@ -275,11 +275,18 @@ body {
 .layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
-  align-items: center;
+  align-items: start;
   gap: clamp(32px, 5vw, 88px);
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 var(--gutter) 48px;
+}
+
+@media (min-width: 900px) {
+  .dial-col {
+    position: sticky;
+    top: 24px;
+  }
 }
 
 @media (max-width: 899px) {
