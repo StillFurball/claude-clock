@@ -2,7 +2,7 @@
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const HOME_TZ = 'Asia/Jakarta';
-const HOME_SLOT = 7; // GMT+7, marked in red wherever the dial is turned
+const HOME_SLOT = 7; // GMT+7, marked in ruby wherever the dial is turned
 
 // Radii in dial units (the SVG viewBox is 1000 wide, centred on 0,0).
 const RING_IN = 300;
@@ -57,54 +57,57 @@ const RING = [
 
 const LISTS = [
   {
+    key: 'indonesia',
     el: document.getElementById('list-indonesia'),
     places: [
-      { name: 'Jakarta', tz: HOME_TZ, zone: 'WIB' },
-      { name: 'Makassar', tz: 'Asia/Makassar', zone: 'WITA' },
-      { name: 'Jayapura', tz: 'Asia/Jayapura', zone: 'WIT' },
+      { name: 'Jakarta', tz: HOME_TZ, zone: 'WIB', country: 'Western Indonesia' },
+      { name: 'Makassar', tz: 'Asia/Makassar', zone: 'WITA', country: 'Central Indonesia' },
+      { name: 'Jayapura', tz: 'Asia/Jayapura', zone: 'WIT', country: 'Eastern Indonesia' },
     ],
   },
   {
+    key: 'world',
     el: document.getElementById('list-world'),
     places: [
-      { name: 'Tokyo', tz: 'Asia/Tokyo' },
-      { name: 'Sydney', tz: 'Australia/Sydney' },
-      { name: 'Delhi', tz: 'Asia/Kolkata' },
-      { name: 'Mecca', tz: 'Asia/Riyadh' },
-      { name: 'Amsterdam', tz: 'Europe/Amsterdam' },
-      { name: 'London', tz: 'Europe/London' },
-      { name: 'New York', tz: 'America/New_York' },
-      { name: 'Los Angeles', tz: 'America/Los_Angeles' },
+      { name: 'Tokyo', tz: 'Asia/Tokyo', country: 'Japan' },
+      { name: 'Sydney', tz: 'Australia/Sydney', country: 'Australia' },
+      { name: 'Delhi', tz: 'Asia/Kolkata', country: 'India' },
+      { name: 'Mecca', tz: 'Asia/Riyadh', country: 'Saudi Arabia' },
+      { name: 'Amsterdam', tz: 'Europe/Amsterdam', country: 'Netherlands' },
+      { name: 'London', tz: 'Europe/London', country: 'United Kingdom' },
+      { name: 'New York', tz: 'America/New_York', country: 'United States' },
+      { name: 'Los Angeles', tz: 'America/Los_Angeles', country: 'United States' },
     ],
   },
   {
+    key: 'f1',
     el: document.getElementById('list-f1'),
     sort: false,
     places: [
-      { name: 'Sakhir', tz: 'Asia/Bahrain', code: 'BAH', zone: 'R1 Bahrain · 12–14 Mar' },
-      { name: 'Jeddah', tz: 'Asia/Riyadh', code: 'JED', zone: 'R2 Saudi Arabia · 19–21 Mar' },
-      { name: 'Melbourne', tz: 'Australia/Melbourne', code: 'MEL', zone: 'R3 Australia · 2–4 Apr' },
-      { name: 'Suzuka', tz: 'Asia/Tokyo', code: 'SZK', zone: 'R4 Japan · 9–11 Apr' },
-      { name: 'Shanghai', tz: 'Asia/Shanghai', code: 'SHA', zone: 'R5 China · 16–18 Apr' },
-      { name: 'Miami', tz: 'America/New_York', code: 'MIA', zone: 'R6 · 30 Apr–2 May' },
-      { name: 'Montréal', tz: 'America/Toronto', code: 'YUL', zone: 'R7 Canada · 21–23 May' },
-      { name: 'Monaco', tz: 'Europe/Monaco', code: 'MCO', zone: 'R8 · 4–6 Jun' },
-      { name: 'Portimão', tz: 'Europe/Lisbon', code: 'PRM', zone: 'R9 Portugal · 18–20 Jun' },
-      { name: 'Silverstone', tz: 'Europe/London', code: 'SIL', zone: 'R10 Great Britain · 2–4 Jul' },
-      { name: 'Spielberg', tz: 'Europe/Vienna', code: 'SPB', zone: 'R11 Austria · 9–11 Jul' },
-      { name: 'Spa-Francorchamps', tz: 'Europe/Brussels', code: 'SPA', zone: 'R12 Belgium · 23–25 Jul' },
-      { name: 'Budapest', tz: 'Europe/Budapest', code: 'BUD', zone: 'R13 Hungary · 30 Jul–1 Aug' },
-      { name: 'Monza', tz: 'Europe/Rome', code: 'MNZ', zone: 'R14 Italy · 3–5 Sep' },
-      { name: 'Madrid', tz: 'Europe/Madrid', code: 'MAD', zone: 'R15 Spain · 10–12 Sep' },
-      { name: 'Baku', tz: 'Asia/Baku', code: 'BAK', zone: 'R16 Azerbaijan · 24–26 Sep' },
-      { name: 'Istanbul', tz: 'Europe/Istanbul', code: 'IST', zone: 'R17 Turkey · 1–3 Oct' },
-      { name: 'Singapore', tz: 'Asia/Singapore', code: 'SIN', zone: 'R18 · 8–10 Oct' },
-      { name: 'Austin', tz: 'America/Chicago', code: 'AUS', zone: 'R19 USA · 22–24 Oct' },
-      { name: 'Mexico City', tz: 'America/Mexico_City', code: 'MEX', zone: 'R20 · 29–31 Oct' },
-      { name: 'São Paulo', tz: 'America/Sao_Paulo', code: 'SAO', zone: 'R21 · 5–7 Nov' },
-      { name: 'Las Vegas', tz: 'America/Los_Angeles', code: 'LAS', zone: 'R22 · 18–20 Nov' },
-      { name: 'Lusail', tz: 'Asia/Qatar', code: 'LUS', zone: 'R23 Qatar · 3–5 Dec' },
-      { name: 'Abu Dhabi', tz: 'Asia/Dubai', code: 'AUH', zone: 'R24 · 10–12 Dec' },
+      { name: 'Sakhir', tz: 'Asia/Bahrain', code: 'BAH', zone: 'R1 Bahrain · 12–14 Mar', round: 1, country: 'Bahrain Grand Prix', dates: '12–14 Mar 2027' },
+      { name: 'Jeddah', tz: 'Asia/Riyadh', code: 'JED', zone: 'R2 Saudi Arabia · 19–21 Mar', round: 2, country: 'Saudi Arabian Grand Prix', dates: '19–21 Mar 2027' },
+      { name: 'Melbourne', tz: 'Australia/Melbourne', code: 'MEL', zone: 'R3 Australia · 2–4 Apr', round: 3, country: 'Australian Grand Prix', dates: '2–4 Apr 2027' },
+      { name: 'Suzuka', tz: 'Asia/Tokyo', code: 'SZK', zone: 'R4 Japan · 9–11 Apr', round: 4, country: 'Japanese Grand Prix', dates: '9–11 Apr 2027' },
+      { name: 'Shanghai', tz: 'Asia/Shanghai', code: 'SHA', zone: 'R5 China · 16–18 Apr', round: 5, country: 'Chinese Grand Prix', dates: '16–18 Apr 2027' },
+      { name: 'Miami', tz: 'America/New_York', code: 'MIA', zone: 'R6 · 30 Apr–2 May', round: 6, country: 'Miami Grand Prix', dates: '30 Apr–2 May 2027' },
+      { name: 'Montréal', tz: 'America/Toronto', code: 'YUL', zone: 'R7 Canada · 21–23 May', round: 7, country: 'Canadian Grand Prix', dates: '21–23 May 2027' },
+      { name: 'Monaco', tz: 'Europe/Monaco', code: 'MCO', zone: 'R8 · 4–6 Jun', round: 8, country: 'Monaco Grand Prix', dates: '4–6 Jun 2027' },
+      { name: 'Portimão', tz: 'Europe/Lisbon', code: 'PRM', zone: 'R9 Portugal · 18–20 Jun', round: 9, country: 'Portuguese Grand Prix', dates: '18–20 Jun 2027' },
+      { name: 'Silverstone', tz: 'Europe/London', code: 'SIL', zone: 'R10 Great Britain · 2–4 Jul', round: 10, country: 'British Grand Prix', dates: '2–4 Jul 2027' },
+      { name: 'Spielberg', tz: 'Europe/Vienna', code: 'SPB', zone: 'R11 Austria · 9–11 Jul', round: 11, country: 'Austrian Grand Prix', dates: '9–11 Jul 2027' },
+      { name: 'Spa-Francorchamps', tz: 'Europe/Brussels', code: 'SPA', zone: 'R12 Belgium · 23–25 Jul', round: 12, country: 'Belgian Grand Prix', dates: '23–25 Jul 2027' },
+      { name: 'Budapest', tz: 'Europe/Budapest', code: 'BUD', zone: 'R13 Hungary · 30 Jul–1 Aug', round: 13, country: 'Hungarian Grand Prix', dates: '30 Jul–1 Aug 2027' },
+      { name: 'Monza', tz: 'Europe/Rome', code: 'MNZ', zone: 'R14 Italy · 3–5 Sep', round: 14, country: 'Italian Grand Prix', dates: '3–5 Sep 2027' },
+      { name: 'Madrid', tz: 'Europe/Madrid', code: 'MAD', zone: 'R15 Spain · 10–12 Sep', round: 15, country: 'Spanish Grand Prix', dates: '10–12 Sep 2027' },
+      { name: 'Baku', tz: 'Asia/Baku', code: 'BAK', zone: 'R16 Azerbaijan · 24–26 Sep', round: 16, country: 'Azerbaijan Grand Prix', dates: '24–26 Sep 2027' },
+      { name: 'Istanbul', tz: 'Europe/Istanbul', code: 'IST', zone: 'R17 Turkey · 1–3 Oct', round: 17, country: 'Turkish Grand Prix', dates: '1–3 Oct 2027' },
+      { name: 'Singapore', tz: 'Asia/Singapore', code: 'SIN', zone: 'R18 · 8–10 Oct', round: 18, country: 'Singapore Grand Prix', dates: '8–10 Oct 2027' },
+      { name: 'Austin', tz: 'America/Chicago', code: 'AUS', zone: 'R19 USA · 22–24 Oct', round: 19, country: 'United States Grand Prix', dates: '22–24 Oct 2027' },
+      { name: 'Mexico City', tz: 'America/Mexico_City', code: 'MEX', zone: 'R20 · 29–31 Oct', round: 20, country: 'Mexico City Grand Prix', dates: '29–31 Oct 2027' },
+      { name: 'São Paulo', tz: 'America/Sao_Paulo', code: 'SAO', zone: 'R21 · 5–7 Nov', round: 21, country: 'São Paulo Grand Prix', dates: '5–7 Nov 2027' },
+      { name: 'Las Vegas', tz: 'America/Los_Angeles', code: 'LAS', zone: 'R22 · 18–20 Nov', round: 22, country: 'Las Vegas Grand Prix', dates: '18–20 Nov 2027' },
+      { name: 'Lusail', tz: 'Asia/Qatar', code: 'LUS', zone: 'R23 Qatar · 3–5 Dec', round: 23, country: 'Qatar Grand Prix', dates: '3–5 Dec 2027' },
+      { name: 'Abu Dhabi', tz: 'Asia/Dubai', code: 'AUH', zone: 'R24 · 10–12 Dec', round: 24, country: 'Abu Dhabi Grand Prix', dates: '10–12 Dec 2027' },
     ],
   },
 ];
@@ -125,8 +128,8 @@ const EXTRA = [
 // (so #Asia/Tokyo keeps working); additional cities in the same zone get a
 // distinct id so selecting them shows their own name on the dial.
 const PLACES = new Map();
-const PRIMARY_LISTS = LISTS.filter((l) => l.el.id !== 'list-f1');
-const SECONDARY_LISTS = LISTS.filter((l) => l.el.id === 'list-f1');
+const PRIMARY_LISTS = LISTS.filter((l) => l.key !== 'f1');
+const SECONDARY_LISTS = LISTS.filter((l) => l.key === 'f1');
 const ALL_SOURCES = [
   ...PRIMARY_LISTS.flatMap((l) => l.places),
   ...RING.flatMap(([, ...c]) => c),
@@ -159,21 +162,50 @@ const homeTime = $('home-time');
 const homeSec = $('home-sec');
 const homeAmpm = $('home-ampm');
 const homeDate = $('home-date');
+const homeGmt = $('home-gmt');
+const homePhaseIcon = $('home-phase-icon');
 const caption = $('caption');
 const goHome = $('go-home');
 const picker = $('picker');
+const panelUtc = $('panel-utc');
+const skyToggle = $('sky-toggle');
+const skyToggleIcon = $('sky-toggle-icon');
+const skyToggleLabel = $('sky-toggle-label');
+const planBanner = $('plan-banner');
+const planBannerText = $('plan-banner-text');
+const planBannerReset = $('plan-banner-reset');
+const citySearch = $('city-search');
+const searchEmpty = $('search-empty');
+const f1Search = $('f1-search');
+const f1Empty = $('f1-empty');
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
-// const reduceMotion = { matches: false };
 
 let format = readFormat();
-let ref = PLACES.get(HOME_TZ); // the place the clock is set to
+let ref = PLACES.get(HOME_TZ);
+let activeView = 'dial';
+let activeFilter = 'all';
+
+/* Inline Celestial Icons (accessible alongside color/text) */
+
+const ICONS = {
+  sun: '<svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M12.6 3.4l-1.1 1.1M4.5 11.5l-1.1 1.1"/></svg>',
+  twilight: '<svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 11.5h12M4.5 11.5a3.5 3.5 0 0 1 7 0M8 4v2M3.8 6.4l1.2 1.2M12.2 6.4L11 7.6"/></svg>',
+  moon: '<svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 10.2A5.2 5.2 0 0 1 5.8 3.5a5.2 5.2 0 1 0 6.7 6.7Z"/></svg>',
+};
+
+function phaseFor(hour) {
+  const h = ((hour % 24) + 24) % 24;
+  if (h >= 5 && h < 7.5) return { key: 'twilight', label: 'Dawn', icon: ICONS.twilight, isNight: false };
+  if (h >= 7.5 && h < 17) return { key: 'day', label: 'Daylight', icon: ICONS.sun, isNight: false };
+  if (h >= 17 && h < 19.5) return { key: 'twilight', label: 'Dusk', icon: ICONS.twilight, isNight: h >= 18 };
+  return { key: 'night', label: 'Night', icon: ICONS.moon, isNight: true };
+}
 
 /* Time zone maths */
 
 const partFormats = new Map();
 
-// Wall-clock fields for a zone, plus its offset from UTC in minutes.
 function zoned(tz, date) {
   let fmt = partFormats.get(tz);
   if (!fmt) {
@@ -218,7 +250,6 @@ function partOfDay(hour) {
   return 'night';
 }
 
-// "Tuesday evening, 27 October": the words back up what the sky shows.
 function longDate(tz, date, hour) {
   const fmt = cachedFormat(`date:${tz}`, () => new Intl.DateTimeFormat('en-GB', {
     timeZone: tz, weekday: 'long', day: 'numeric', month: 'long',
@@ -248,8 +279,6 @@ function skyColor(hour) {
   return `color-mix(in oklab, var(--day) ${pct}%, var(--night))`;
 }
 
-// Which ink reads on the ring at this hour. Mid-twilight gets its own token
-// because the best choice there differs between light and dark themes.
 function inkFor(hour) {
   const d = daylight(hour);
   if (d === 0.5) return 'on-twilight';
@@ -292,7 +321,7 @@ function describeGap(minutes) {
 const capitalise = (text) => text.charAt(0).toUpperCase() + text.slice(1);
 
 function setText(node, text) {
-  if (node.textContent !== text) node.textContent = text;
+  if (node && node.textContent !== text) node.textContent = text;
 }
 
 /* Settings */
@@ -311,6 +340,30 @@ function saveFormat(value) {
   } catch {}
 }
 
+/* Atmosphere Sky Mode Button */
+
+const SKY_MODES = [
+  { id: 'auto', label: 'Solar', icon: ICONS.twilight },
+  { id: 'night', label: 'Nocturne', icon: ICONS.moon },
+  { id: 'day', label: 'Daylight', icon: ICONS.sun },
+];
+
+function renderSkyToggle() {
+  const mode = window.getSkyMode ? window.getSkyMode() : 'auto';
+  const info = SKY_MODES.find((m) => m.id === mode) ?? SKY_MODES[0];
+  skyToggleIcon.innerHTML = info.icon;
+  setText(skyToggleLabel, info.label);
+  skyToggle.setAttribute('aria-label', `Atmosphere mode: ${info.label}. Click to switch.`);
+}
+
+skyToggle.addEventListener('click', () => {
+  const current = window.getSkyMode ? window.getSkyMode() : 'auto';
+  const idx = SKY_MODES.findIndex((m) => m.id === current);
+  const next = SKY_MODES[(idx + 1) % SKY_MODES.length];
+  if (window.setSkyMode) window.setSkyMode(next.id, !reduceMotion.matches);
+  renderSkyToggle();
+});
+
 /* SVG helpers */
 
 function svg(name, attrs, parent) {
@@ -320,7 +373,6 @@ function svg(name, attrs, parent) {
   return node;
 }
 
-// Degrees measured clockwise from 12 o'clock.
 function polar(r, deg) {
   const a = (deg * Math.PI) / 180;
   return [r * Math.sin(a), -r * Math.cos(a)];
@@ -350,26 +402,40 @@ function arcPath(r, a0, a1, clockwise) {
   return `M${fixed(x0)} ${fixed(y0)}A${r} ${r} 0 0 ${clockwise ? 1 : 0} ${fixed(x1)} ${fixed(y1)}`;
 }
 
-/* Dial finish: sunburst, seconds track and slot ticks. Built once. */
+/* Dial finish: guilloché, sunburst, seconds track, cardinal jewels, and slot ticks */
 
 function buildFinish() {
+  const guilloche = $('guilloche');
+  for (let r = 80; r <= 252; r += 16) {
+    svg('circle', { r }, guilloche);
+  }
+
   const sunburst = $('sunburst');
-  for (let i = 0; i < 180; i++) radial(36, 262, i * 2, {}, sunburst);
+  for (let i = 0; i < 180; i++) radial(44, 260, i * 2, {}, sunburst);
 
   const track = $('track');
   for (let s = 0; s < 60; s++) {
-    radial(s % 5 ? 280 : 272, 290, s * 6, { class: s % 5 ? '' : 'is-five' }, track);
+    if (s % 15 === 0) {
+      const [cx, cy] = polar(281, s * 6);
+      const deg = s * 6;
+      svg('path', {
+        d: 'M0 -9 L5.5 0 L0 9 L-5.5 0 Z',
+        class: 'cardinal-jewel',
+        transform: `translate(${fixed(cx)} ${fixed(cy)}) rotate(${deg})`,
+      }, track);
+    } else {
+      radial(s % 5 ? 280 : 272, 290, s * 6, { class: s % 5 ? '' : 'is-five' }, track);
+    }
   }
 
-  // Ticks on the outer edge line up with the city slots and turn with them.
   for (let q = 0; q < 96; q++) {
     const slotTick = q % 4 === 0;
-    radial(slotTick ? 474 : 484, 491, q * 3.75, { class: slotTick ? 'slot-tick' : 'fine-tick' }, turnGroup);
+    radial(slotTick ? 473 : 482, 488, q * 3.75, { class: slotTick ? 'slot-tick' : 'fine-tick' }, turnGroup);
   }
-  radial(462, 491, HOME_SLOT * 15, { class: 'home-tick' }, turnGroup);
+  radial(460, 488, HOME_SLOT * 15, { class: 'home-tick' }, turnGroup);
 }
 
-/* The 24-hour ring */
+/* The 24-hour celestial ring */
 
 function sunGlyph(parent) {
   const g = svg('g', { class: 'glyph sun' }, parent);
@@ -381,19 +447,30 @@ function sunGlyph(parent) {
 function moonGlyph(parent) {
   const g = svg('g', { class: 'glyph moon' }, parent);
   svg('circle', { r: 12, class: 'moon-lit' }, g);
-  svg('circle', { r: 10.5, cx: 6, cy: -4, class: 'moon-shade' }, g);
+  svg('circle', { r: 10.5, cx: 5.5, cy: -3.5, class: 'moon-shade' }, g);
   return g;
 }
 
 function buildRing() {
-  // Five-minute slices keep dawn and dusk smooth.
   for (let q = 0; q < 288; q++) {
     const a0 = q * 1.25;
     svg('path', {
-      d: sectorPath(RING_IN, RING_OUT, a0, a0 + 1.25 + 0.15),
+      d: sectorPath(RING_IN, RING_OUT, a0, a0 + 1.25 + 0.16),
       style: `fill: ${skyColor((q + 0.5) / 12)}`,
     }, ringGroup);
   }
+
+  // Delicate engraved gold stars tucked in the midnight arc (hours 20..4)
+  const starSpecs = [
+    [322, 308, 1.8], [368, 322, 1.4], [318, 338, 1.3], [362, 349, 1.9],
+    [326, 12, 1.6], [366, 26, 1.4], [322, 42, 1.7], [364, 54, 1.3],
+    [340, 294, 1.4], [338, 66, 1.5],
+  ];
+  for (const [r, deg, rad] of starSpecs) {
+    const [cx, cy] = polar(r, deg);
+    svg('circle', { cx: fixed(cx), cy: fixed(cy), r: rad, class: 'ring-star' }, ringGroup);
+  }
+
   for (let half = 0; half < 48; half++) {
     const hour = half / 2;
     const isHalf = half % 2 === 1;
@@ -401,7 +478,7 @@ function buildRing() {
       class: `tick ${inkFor(hour)}${isHalf ? ' is-half' : ''}`,
     }, ringGroup);
   }
-  // Noon and midnight get a sun and a moon, as on a watchmaker's world timer.
+
   return Array.from({ length: 24 }, (_, h) => {
     const g = svg('g', {}, numeralGroup);
     if (h === 12) sunGlyph(g);
@@ -425,7 +502,6 @@ function labelNumerals() {
 
 let slots = [];
 
-// Build the 24 slot labels once; names are filled in by nameSlots().
 function buildCityRing() {
   slots = RING.map(([slot]) => {
     const id = `slot-${slot + 12}`;
@@ -442,8 +518,6 @@ function buildCityRing() {
   });
 }
 
-// Pick a city for every slot. The selected city takes its own slot,
-// except Jakarta's, which always stays Jakarta.
 function nameSlots(now) {
   const used = new Set([ref.tz]);
   const refOffset = zoned(ref.tz, now).offset;
@@ -469,9 +543,6 @@ function nameSlots(now) {
   if (changed) fitCityLabels();
 }
 
-// Lay the labels along the rim for the current turn of the dial, keeping
-// every name upright: top-half names sit on a clockwise arc, bottom-half
-// names on an anticlockwise one.
 function layoutCityRing() {
   for (const s of slots) {
     const angle = wrap180(s.slot * 15 + dialTurn);
@@ -483,24 +554,26 @@ function layoutCityRing() {
   }
 }
 
-// Squeeze any name that would spill past its 15° slot.
 function fitCityLabels() {
+  if (activeView !== 'dial') return;
   const room = (2 * Math.PI * CITY_R_TOP * 13) / 360;
   for (const label of cityGroup.querySelectorAll('.city-label.long')) {
     const onPath = label.firstChild;
     onPath.removeAttribute('textLength');
-    if (label.getComputedTextLength() > room) {
-      onPath.setAttribute('textLength', fixed(room));
-      onPath.setAttribute('lengthAdjust', 'spacingAndGlyphs');
-    }
+    try {
+      if (label.getComputedTextLength() > room) {
+        onPath.setAttribute('textLength', fixed(room));
+        onPath.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+      }
+    } catch {}
   }
 }
 
 /* Turning the dial */
 
-let utcAngle = 0; // UTC time of day as degrees on the 24-hour ring
-let dialTurn = 0; // rotation that brings the selected city to 12 o'clock
-let wind = 0; // extra turn of the 24-hour ring during the opening animation
+let utcAngle = 0;
+let dialTurn = 0;
+let wind = 0;
 let turning = false;
 
 function drawDial() {
@@ -515,8 +588,6 @@ function drawDial() {
 
 const turnFor = (offsetMinutes) => -offsetMinutes / 4;
 
-// Turn the whole dial so the selected city comes to 12 o'clock, with a small
-// overshoot as it settles, like a bezel clicking into place.
 function turnTo(target, animate) {
   const from = dialTurn;
   const delta = wrap180(target - from);
@@ -548,7 +619,7 @@ function turnTo(target, animate) {
   requestAnimationFrame(frame);
 }
 
-/* The reading line */
+/* The reading caliper */
 
 let readerAngle = 0;
 let reading = null;
@@ -568,7 +639,6 @@ function showOnDial(p) {
     return;
   }
   if (!dial.classList.contains('is-reading')) {
-    // Swing out from 12 o'clock each time, so the gap is visible as movement.
     reader.style.transition = 'none';
     reader.style.transform = 'rotate(0deg)';
     readerAngle = 0;
@@ -584,8 +654,6 @@ function showOnDial(p) {
   }
 }
 
-// Deferred so sliding from one row to the next keeps the line moving
-// instead of snapping back to 12 o'clock in between.
 function clearDial(now = false) {
   clearTimeout(clearTimer);
   const clear = () => {
@@ -596,7 +664,7 @@ function clearDial(now = false) {
   else clearTimer = setTimeout(clear, 150);
 }
 
-/* City lists */
+/* Observatory Panel Lists (Dial View) */
 
 const placeByRow = new Map();
 
@@ -622,6 +690,7 @@ function buildLists() {
         hm: row.querySelector('.hm'),
         ampm: row.querySelector('.ampm'),
         gap: row.querySelector('.city-gap'),
+        searchBlob: `${p.name} ${p.zone ?? ''} ${p.country ?? ''} ${p.code ?? ''}`.toLowerCase(),
       });
 
       const hide = () => {
@@ -646,34 +715,77 @@ function buildLists() {
   }
 }
 
+function applyPanelFilters() {
+  const query = citySearch.value.trim().toLowerCase();
+  let totalVisible = 0;
+
+  for (const list of LISTS) {
+    const groupEl = document.querySelector(`.city-group[data-group="${list.key}"]`);
+    const groupAllowed = activeFilter === 'all' || activeFilter === list.key;
+    let visibleInGroup = 0;
+
+    for (const p of list.places) {
+      const match = groupAllowed && (!query || p.searchBlob.includes(query));
+      p.item.hidden = !match;
+      if (match) visibleInGroup++;
+    }
+
+    groupEl.hidden = visibleInGroup === 0;
+    const countBadge = groupEl.querySelector('.group-count');
+    if (countBadge) setText(countBadge, String(visibleInGroup));
+    totalVisible += visibleInGroup;
+  }
+
+  searchEmpty.hidden = totalVisible > 0;
+}
+
+citySearch.addEventListener('input', applyPanelFilters);
+for (const pill of document.querySelectorAll('.filter-pill')) {
+  pill.addEventListener('click', () => {
+    activeFilter = pill.dataset.filter;
+    for (const btn of document.querySelectorAll('.filter-pill')) {
+      const active = btn === pill;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-pressed', String(active));
+    }
+    applyPanelFilters();
+  });
+}
+
 function renderLists(now, refZone) {
   for (const list of LISTS) {
     for (const p of list.places) {
       const z = zoned(p.tz, now);
       p.offset = z.offset;
+      const localHour = z.h + z.m / 60;
+      const phase = phaseFor(localHour);
       const { hm, ampm } = clockParts(z.h, z.m);
       setText(p.hm, hm);
       setText(p.ampm, ampm);
-      p.swatch.style.background = skyColor(z.h + z.m / 60);
+      p.swatch.style.background = skyColor(localHour);
+      p.swatch.classList.toggle('is-night', phase.isNight);
+      if (p.swatch.dataset.phase !== phase.key) {
+        p.swatch.dataset.phase = phase.key;
+        p.swatch.innerHTML = phase.icon;
+      }
 
       const selected = p.id === ref.id;
       p.row.setAttribute('aria-pressed', String(selected));
       let text;
       if (selected) {
-        text = 'Shown on the dial';
+        text = 'Active on the timepiece';
       } else {
         const parts = [];
         if (p.zone) parts.push(p.zone);
         if (z.day > refZone.day) parts.push('tomorrow');
         if (z.day < refZone.day) parts.push('yesterday');
         parts.push(describeGap(z.offset - refZone.offset));
-        text = capitalise(parts.join(', '));
+        text = capitalise(parts.join(' · '));
       }
       setText(p.gap, text);
     }
 
     if (list.sort !== false) {
-      // Furthest ahead first; only touch the DOM when the order actually changes.
       const sorted = [...list.places].sort((a, b) => b.offset - a.offset);
       if (sorted.some((p, i) => list.el.children[i] !== p.item)) {
         list.el.append(...sorted.map((p) => p.item));
@@ -681,6 +793,273 @@ function renderLists(now, refZone) {
     }
   }
   if (reading) showOnDial(reading);
+}
+
+/* ==========================================================================
+   PAGE 2: WORLD ATLAS GALLERY CARDS
+   ========================================================================== */
+
+const atlasIndonesiaEl = $('atlas-indonesia');
+const atlasWorldEl = $('atlas-world');
+const atlasSummary = $('atlas-summary');
+const atlasRefCity = $('atlas-ref-city');
+const atlasRefTime = $('atlas-ref-time');
+const atlasCards = [];
+
+function createAtlasCard(p, container) {
+  const card = document.createElement('button');
+  card.type = 'button';
+  card.className = `atlas-card${p.tz === HOME_TZ ? ' is-home' : ''}`;
+  card.innerHTML =
+    '<div class="atlas-sky-band">' +
+      '<span class="atlas-phase"><span class="atlas-phase-icon" aria-hidden="true"></span><span class="atlas-phase-label"></span></span>' +
+      '<span class="atlas-gmt"></span>' +
+    '</div>' +
+    '<div class="atlas-body">' +
+      '<div class="atlas-top-row">' +
+        '<span class="atlas-city"></span>' +
+        '<span class="atlas-zone-tag"></span>' +
+      '</div>' +
+      '<div class="atlas-clock"><span class="atlas-hm"></span><span class="atlas-ampm"></span></div>' +
+      '<div class="atlas-solar-bar" aria-hidden="true"><span class="atlas-solar-dot"></span></div>' +
+      '<div class="atlas-foot">' +
+        '<span class="atlas-gap"></span>' +
+        '<span class="atlas-cta">Set dial →</span>' +
+      '</div>' +
+    '</div>';
+
+  card.querySelector('.atlas-city').textContent = p.name;
+  const tag = card.querySelector('.atlas-zone-tag');
+  if (p.zone || p.country) tag.textContent = p.zone ?? p.country;
+  else tag.hidden = true;
+
+  card.addEventListener('click', () => {
+    selectPlace(p.id, true);
+    switchView('dial');
+  });
+
+  container.append(card);
+  atlasCards.push({
+    p,
+    container,
+    card,
+    band: card.querySelector('.atlas-sky-band'),
+    phaseIcon: card.querySelector('.atlas-phase-icon'),
+    phaseLabel: card.querySelector('.atlas-phase-label'),
+    gmt: card.querySelector('.atlas-gmt'),
+    hm: card.querySelector('.atlas-hm'),
+    ampm: card.querySelector('.atlas-ampm'),
+    solarBar: card.querySelector('.atlas-solar-bar'),
+    gap: card.querySelector('.atlas-gap'),
+    cta: card.querySelector('.atlas-cta'),
+  });
+}
+
+function buildAtlas() {
+  const idList = LISTS.find((l) => l.key === 'indonesia');
+  const worldList = LISTS.find((l) => l.key === 'world');
+  for (const p of idList.places) createAtlasCard(p, atlasIndonesiaEl);
+  for (const p of worldList.places) createAtlasCard(p, atlasWorldEl);
+}
+
+function renderAtlas(now, refZone) {
+  setText(atlasSummary, `Every destination illuminated by its real-time local sky, measured against ${ref.name}.`);
+  setText(atlasRefCity, `${ref.name} · ${gmtLabel(refZone.offset)}`);
+  const refParts = clockParts(refZone.h, refZone.m);
+  setText(atlasRefTime, `${refParts.hm}${refParts.ampm ? ` ${refParts.ampm}` : ''}`);
+
+  for (const entry of atlasCards) {
+    const { p, card, band, phaseIcon, phaseLabel, gmt, hm, ampm, solarBar, gap, cta } = entry;
+    const z = zoned(p.tz, now);
+    const localHour = z.h + z.m / 60;
+    const phase = phaseFor(localHour);
+    const time = clockParts(z.h, z.m);
+
+    setText(hm, time.hm);
+    setText(ampm, time.ampm);
+    setText(gmt, gmtLabel(z.offset));
+    setText(phaseLabel, `${capitalise(partOfDay(z.h))}`);
+    if (phaseIcon.dataset.phase !== phase.key) {
+      phaseIcon.dataset.phase = phase.key;
+      phaseIcon.innerHTML = phase.icon;
+    }
+
+    // Live OKLab local sky wash for each city card's header band
+    if (window.skyColorsForHour) {
+      const sky = window.skyColorsForHour(localHour);
+      card.style.setProperty('--card-sky-top', sky.top);
+      card.style.setProperty('--card-sky-bottom', sky.bottom);
+      card.style.setProperty('--card-sky-ink', sky.isNight ? '#eef2fb' : '#16213a');
+      band.classList.toggle('is-light', !sky.isNight);
+    }
+
+    solarBar.style.setProperty('--solar-pct', `${((localHour / 24) * 100).toFixed(1)}%`);
+
+    const selected = p.id === ref.id;
+    card.classList.toggle('is-selected', selected);
+    setText(cta, selected ? 'Active dial' : 'Set dial →');
+
+    if (selected) {
+      setText(gap, 'Current reference meridian');
+    } else {
+      const parts = [];
+      if (z.day > refZone.day) parts.push('Tomorrow');
+      else if (z.day < refZone.day) parts.push('Yesterday');
+      else parts.push('Today');
+      parts.push(describeGap(z.offset - refZone.offset));
+      setText(gap, parts.join(' · '));
+    }
+  }
+
+  // Sort world cards furthest ahead first
+  const worldEntries = atlasCards
+    .filter((e) => e.container === atlasWorldEl)
+    .sort((a, b) => b.p.offset - a.p.offset);
+  if (worldEntries.some((e, i) => atlasWorldEl.children[i] !== e.card)) {
+    atlasWorldEl.append(...worldEntries.map((e) => e.card));
+  }
+}
+
+/* ==========================================================================
+   PAGE 3: FORMULA 1 2027 GRAND PRIX CHRONOMETER
+   ========================================================================== */
+
+const f1GridEl = $('f1-grid');
+const f1Summary = $('f1-summary');
+const f1Cards = [];
+
+function buildF1() {
+  const f1List = LISTS.find((l) => l.key === 'f1');
+  for (const p of f1List.places) {
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'f1-card';
+    card.innerHTML =
+      '<div class="f1-top">' +
+        `<span class="f1-round">Round ${pad(p.round)}</span>` +
+        `<span class="f1-date">${p.dates}</span>` +
+      '</div>' +
+      '<div class="f1-main">' +
+        '<div>' +
+          `<div class="f1-circuit">${p.name}</div>` +
+          `<div class="f1-country">${p.country}</div>` +
+        '</div>' +
+        `<span class="f1-code">${p.code}</span>` +
+      '</div>' +
+      '<div class="f1-time-row">' +
+        '<div class="f1-clock"><span class="f1-hm"></span><span class="f1-ampm"></span></div>' +
+        '<span class="f1-phase-pill"><span class="f1-phase-icon" aria-hidden="true"></span><span class="f1-phase-text"></span></span>' +
+      '</div>' +
+      '<div class="f1-gap"></div>';
+
+    card.addEventListener('click', () => {
+      selectPlace(p.id, true);
+      switchView('dial');
+    });
+
+    f1GridEl.append(card);
+    f1Cards.push({
+      p,
+      card,
+      hm: card.querySelector('.f1-hm'),
+      ampm: card.querySelector('.f1-ampm'),
+      phaseIcon: card.querySelector('.f1-phase-icon'),
+      phaseText: card.querySelector('.f1-phase-text'),
+      gap: card.querySelector('.f1-gap'),
+      searchBlob: `r${p.round} round ${pad(p.round)} ${p.name} ${p.country} ${p.dates} ${p.code}`.toLowerCase(),
+    });
+  }
+}
+
+function applyF1Filter() {
+  const query = f1Search.value.trim().toLowerCase();
+  let visible = 0;
+  for (const entry of f1Cards) {
+    const match = !query || entry.searchBlob.includes(query);
+    entry.card.hidden = !match;
+    if (match) visible++;
+  }
+  f1Empty.hidden = visible > 0;
+}
+
+f1Search.addEventListener('input', applyF1Filter);
+
+function renderF1(now, refZone) {
+  setText(f1Summary, `24 Grands Prix from Sakhir to Abu Dhabi — live local paddock time compared with ${ref.name}.`);
+
+  for (const entry of f1Cards) {
+    const { p, card, hm, ampm, phaseIcon, phaseText, gap } = entry;
+    const z = zoned(p.tz, now);
+    const localHour = z.h + z.m / 60;
+    const phase = phaseFor(localHour);
+    const time = clockParts(z.h, z.m);
+
+    setText(hm, time.hm);
+    setText(ampm, time.ampm);
+    setText(phaseText, `${phase.label} · ${gmtLabel(z.offset)}`);
+    if (phaseIcon.dataset.phase !== phase.key) {
+      phaseIcon.dataset.phase = phase.key;
+      phaseIcon.innerHTML = phase.icon;
+    }
+
+    if (window.skyColorsForHour) {
+      const sky = window.skyColorsForHour(localHour);
+      card.style.setProperty('--card-sky-top', sky.top);
+      card.style.setProperty('--card-sky-bottom', sky.bottom);
+    }
+
+    const selected = p.id === ref.id;
+    card.classList.toggle('is-selected', selected);
+
+    if (selected) {
+      setText(gap, 'Active on timepiece · Click to return to dial');
+    } else {
+      const parts = [];
+      if (z.day > refZone.day) parts.push('Tomorrow');
+      else if (z.day < refZone.day) parts.push('Yesterday');
+      parts.push(`${describeGap(z.offset - refZone.offset)} vs ${ref.name}`);
+      setText(gap, capitalise(parts.join(' · ')));
+    }
+  }
+}
+
+/* ==========================================================================
+   PAGE NAVIGATION (DIAL / ATLAS / F1 2027)
+   ========================================================================== */
+
+const VIEW_ELS = {
+  dial: $('view-dial'),
+  atlas: $('view-atlas'),
+  f1: $('view-f1'),
+};
+
+function applyView(viewName) {
+  activeView = viewName;
+  for (const [key, el] of Object.entries(VIEW_ELS)) {
+    el.hidden = key !== viewName;
+  }
+  for (const btn of document.querySelectorAll('.nav-tab')) {
+    if (btn.dataset.view === viewName) btn.setAttribute('aria-current', 'page');
+    else btn.removeAttribute('aria-current');
+  }
+  updatePlanBanner();
+  if (viewName === 'dial') {
+    requestAnimationFrame(fitCityLabels);
+  }
+  window.scrollTo({ top: 0, behavior: reduceMotion.matches ? 'instant' : 'smooth' });
+}
+
+function switchView(viewName) {
+  if (viewName === activeView || !VIEW_ELS[viewName]) return;
+  if (!reduceMotion.matches && document.startViewTransition) {
+    document.startViewTransition(() => applyView(viewName));
+  } else {
+    applyView(viewName);
+  }
+}
+
+for (const btn of document.querySelectorAll('.nav-tab')) {
+  btn.addEventListener('click', () => switchView(btn.dataset.view));
 }
 
 /* The "Clock for" menu */
@@ -707,6 +1086,14 @@ function renderCaption(now, refZone) {
   goHome.hidden = !away;
   homeCity.classList.toggle('is-home', !away);
   setText(homeCity, ref.name);
+  setText(homeGmt, gmtLabel(refZone.offset));
+
+  const phase = phaseFor(refZone.h + refZone.m / 60);
+  if (homePhaseIcon.dataset.phase !== phase.key) {
+    homePhaseIcon.dataset.phase = phase.key;
+    homePhaseIcon.innerHTML = phase.icon;
+  }
+
   if (!away) {
     setText(caption, 'Western Indonesia Time (WIB), GMT+7. Bangkok, Hanoi and Phnom Penh share this time.');
     return;
@@ -718,14 +1105,19 @@ function renderCaption(now, refZone) {
   setText(caption, `${zoneName(ref.tz, now)}, ${gmtLabel(refZone.offset)}. ${relation}`);
 }
 
-function renderHome(refZone) {
+function renderHome(refZone, now) {
   const { hm, ampm } = clockParts(refZone.h, refZone.m);
   setText(homeTime, hm);
   homeTime.dateTime = `${pad(refZone.h)}:${pad(refZone.m)}:${pad(refZone.s)}`;
   setText(homeSec, pad(refZone.s));
   setText(homeAmpm, ampm);
   homeAmpm.hidden = !ampm;
-  if (!planShift) document.title = `${hm}${ampm ? ` ${ampm}` : ''} in ${ref.name}`;
+
+  const utcH = pad(now.getUTCHours());
+  const utcM = pad(now.getUTCMinutes());
+  setText(panelUtc, `UTC ${utcH}:${utcM}`);
+
+  if (!planShift) document.title = `${hm}${ampm ? ` ${ampm}` : ''} in ${ref.name} · World Time`;
 }
 
 function selectPlace(id, animate = true) {
@@ -740,7 +1132,6 @@ function selectPlace(id, animate = true) {
     reading = null;
     clearDial(true);
   }
-  // Start the turn first, so render() doesn't snap the dial there instead.
   const now = clockNow();
   turnTo(turnFor(zoned(ref.tz, now).offset), animate);
   renderPlan();
@@ -759,7 +1150,6 @@ cityGroup.addEventListener('click', (event) => {
 let secondsAngle = 0;
 let lastSecond = null;
 
-// The pointer only ever moves forward, so the tick never spins backwards at :00.
 function tickSeconds(s) {
   if (lastSecond === null) {
     secondsAngle = s * 6;
@@ -772,39 +1162,49 @@ function tickSeconds(s) {
   secondsHand.style.transform = `rotate(${secondsAngle}deg)`;
 }
 
-/* Plan a time */
+/* Plan a time (Time Travel Scrubber + Presets) */
 
 const QUARTER_HOUR = 15 * 60000;
 const planInput = $('plan');
 const planOut = $('plan-out');
 const planReset = $('plan-reset');
-let planShift = 0; // minutes from now; 0 means the live clock
+let planShift = 0;
 
-// A planned time starts from the current quarter hour so it lands on round times.
 function clockNow() {
   const now = Date.now();
   if (!planShift) return new Date(now);
   return new Date(Math.floor(now / QUARTER_HOUR) * QUARTER_HOUR + planShift * 60000);
 }
 
+function updatePlanBanner() {
+  planBanner.hidden = !planShift || activeView === 'dial';
+}
+
 function renderPlan() {
   const planning = planShift !== 0;
   document.body.classList.toggle('is-planning', planning);
   planReset.hidden = !planning;
+  updatePlanBanner();
+
+  for (const chip of document.querySelectorAll('.preset-chip')) {
+    chip.classList.toggle('is-active', Number(chip.dataset.shift) === planShift);
+  }
+
   if (!planning) {
-    planOut.textContent = 'Showing now';
+    planOut.textContent = 'Showing live time';
     planInput.setAttribute('aria-valuetext', 'Now');
     return;
   }
   const z = zoned(ref.tz, clockNow());
   const { hm, ampm } = clockParts(z.h, z.m);
   const when = planShift > 0 ? `in ${duration(planShift, true)}` : `${duration(planShift, true)} ago`;
-  const text = `${hm}${ampm ? ` ${ampm}` : ''} in ${ref.name}, ${when}`;
+  const text = `${hm}${ampm ? ` ${ampm}` : ''} in ${ref.name} · ${when}`;
   planOut.textContent = text;
+  planBannerText.textContent = `Time travel preview: ${text}`;
   planInput.setAttribute('aria-valuetext', text);
 }
 
-let sliding = false; // a page crossfade would fight a drag, so skip it then
+let sliding = false;
 
 function setPlan(minutes, fromSlider = false) {
   planShift = minutes;
@@ -820,11 +1220,15 @@ planReset.addEventListener('click', () => {
   setPlan(0);
   planInput.focus();
 });
+planBannerReset.addEventListener('click', () => setPlan(0));
 planInput.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && planShift) setPlan(0);
 });
+for (const chip of document.querySelectorAll('.preset-chip')) {
+  chip.addEventListener('click', () => setPlan(Number(chip.dataset.shift)));
+}
 
-/* Clock */
+/* Main Clock Loop */
 
 let lastMinute = -1;
 
@@ -837,13 +1241,14 @@ function render(now, force = false) {
     paintSky(refZone.h + refZone.m / 60, !reduceMotion.matches, !sliding);
     nameSlots(now);
     renderLists(now, refZone);
+    renderAtlas(now, refZone);
+    renderF1(now, refZone);
     renderCaption(now, refZone);
     renderPicker(now);
-    // Daylight saving can move the selected city between slots.
     const target = turnFor(refZone.offset);
     if (!turning && Math.abs(wrap180(target - dialTurn)) > 0.01) turnTo(target, false);
   }
-  renderHome(refZone);
+  renderHome(refZone, now);
   tickSeconds(refZone.s);
   utcAngle = ((Math.floor(now.getTime() / 1000) / 240) % 360 + 360) % 360;
   if (!turning) drawDial();
@@ -854,11 +1259,10 @@ function tick() {
   setTimeout(tick, 1000 - (Date.now() % 1000) + 10);
 }
 
-// On load the 24-hour ring winds into place, the one orchestrated moment on the page.
 function intro() {
   if (reduceMotion.matches) return;
   const start = performance.now();
-  const length = 1700;
+  const length = 1600;
   wind = 150;
   const frame = (t) => {
     const k = Math.min(1, (t - start) / length);
@@ -883,11 +1287,15 @@ for (const input of document.querySelectorAll('input[name="format"]')) {
 
 buildCityRing();
 buildLists();
+buildAtlas();
+buildF1();
 labelNumerals();
+renderSkyToggle();
 
-// A link like index.html#Asia/Tokyo opens with the clock set to Tokyo.
 const linked = decodeURIComponent(location.hash.slice(1));
 if (PLACES.has(linked)) ref = PLACES.get(linked);
+const initialView = new URLSearchParams(location.search).get('view');
+if (initialView && VIEW_ELS[initialView]) applyView(initialView);
 dialTurn = turnFor(zoned(ref.tz, new Date()).offset);
 layoutCityRing();
 render(new Date(), true);
@@ -899,6 +1307,5 @@ window.addEventListener('hashchange', () => {
   if (PLACES.has(tz)) selectPlace(tz);
 });
 
-// Full names are hidden on small dials and can't be measured until shown again.
 document.fonts?.ready.then(fitCityLabels);
 new ResizeObserver(fitCityLabels).observe(dial);

@@ -3,111 +3,322 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>World time</title>
-  <meta name="description" content="A world clock read from GMT+7, Western Indonesia Time.">
+  <title>World Time · Horological Observatory</title>
+  <meta name="description" content="A luxury horological world clock read from GMT+7, Western Indonesia Time, with live solar skies, World Atlas, and Formula 1 2027 calendar.">
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#c6dbee">
+  <meta name="theme-color" content="#c8ddef">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,200..800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="style.css">
   <script src="sky.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
   <div class="sky" id="sky" aria-hidden="true"></div>
-  <header class="top">
-    <h1>World time</h1>
-    <div class="controls">
-      <label class="picker">
-        <span>Clock for</span>
-        <span class="picker-field"><select id="picker"></select></span>
-      </label>
-      <fieldset class="format">
-        <legend class="sr-only">Clock format</legend>
-        <label><input type="radio" name="format" value="24" checked><span>24-hour</span></label>
-        <label><input type="radio" name="format" value="12"><span>12-hour</span></label>
-      </fieldset>
+
+  <header class="top-wrap">
+    <div class="top">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 36 36" width="32" height="32" fill="none">
+            <circle cx="18" cy="18" r="16" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+            <circle cx="18" cy="18" r="11.5" stroke="currentColor" stroke-width="1"/>
+            <path d="M18 3.5V7M18 29V32.5M3.5 18H7M29 18H32.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M18 10L20.5 18L18 26L15.5 18Z" fill="currentColor"/>
+            <circle cx="18" cy="18" r="2" fill="var(--dial)"/>
+          </svg>
+        </span>
+        <div class="brand-copy">
+          <h1>World Time</h1>
+          <p class="brand-sub">Horological Observatory</p>
+        </div>
+      </div>
+
+      <nav class="page-nav" aria-label="Views">
+        <button type="button" class="nav-tab" data-view="dial" aria-current="page">
+          <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="10" cy="10" r="7.5"/>
+            <path d="M10 5.5V10L13 11.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Chronometer</span>
+        </button>
+        <button type="button" class="nav-tab" data-view="atlas">
+          <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="10" cy="10" r="7.5"/>
+            <ellipse cx="10" cy="10" rx="3.5" ry="7.5"/>
+            <path d="M3 10H17"/>
+          </svg>
+          <span>World Atlas</span>
+        </button>
+        <button type="button" class="nav-tab" data-view="f1">
+          <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M4 15V4.5M4 5.5C6.5 4.2 8.8 6.8 11.5 5.5C13.2 4.7 14.8 4.8 16 5.5V11.5C14.8 10.8 13.2 10.7 11.5 11.5C8.8 12.8 6.5 10.2 4 11.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>F1 2027</span>
+        </button>
+      </nav>
+
+      <div class="controls">
+        <label class="picker" for="picker">
+          <span class="picker-label">Clock for</span>
+          <span class="picker-field">
+            <select id="picker" name="city"></select>
+          </span>
+        </label>
+
+        <fieldset class="format">
+          <legend class="sr-only">Clock format</legend>
+          <label><input type="radio" name="format" value="24" checked><span>24h</span></label>
+          <label><input type="radio" name="format" value="12"><span>12h</span></label>
+        </fieldset>
+
+        <button type="button" class="sky-toggle" id="sky-toggle" aria-label="Atmosphere mode: Solar">
+          <span class="sky-toggle-icon" id="sky-toggle-icon" aria-hidden="true"></span>
+          <span id="sky-toggle-label">Solar</span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <main class="layout">
-    <section class="dial-col" aria-labelledby="home-city">
-      <div class="dial">
-        <svg class="dial-svg" id="dial" viewBox="-500 -500 1000 1000" aria-hidden="true" focusable="false">
-          <defs>
-            <radialGradient id="sheen" cx="0" cy="-90" r="320" gradientUnits="userSpaceOnUse">
-              <stop offset="0" style="stop-color: var(--dial-hi)"/>
-              <stop offset="1" style="stop-color: var(--dial)"/>
-            </radialGradient>
-            <g id="paths"></g>
-          </defs>
+  <div class="plan-banner-wrap" id="plan-banner" hidden>
+    <div class="plan-banner">
+      <span class="plan-banner-dot" aria-hidden="true"></span>
+      <span id="plan-banner-text">Time travel active</span>
+      <button type="button" class="pill-button" id="plan-banner-reset">Return to live</button>
+    </div>
+  </div>
 
-          <circle class="face" r="496"/>
-          <circle class="disc" r="300"/>
-          <g class="sunburst" id="sunburst"></g>
-          <g class="track" id="track"></g>
-          <g class="seconds" id="seconds">
-            <path d="M0 -268 L-7 -252 L7 -252 Z"/>
-          </g>
+  <main class="stage">
+    <!-- PAGE 1: CHRONOMETER DIAL -->
+    <div class="view layout" id="view-dial">
+      <section class="dial-col" aria-labelledby="home-city">
+        <div class="dial-pedestal">
+          <div class="dial">
+            <svg class="dial-svg" id="dial" viewBox="-500 -500 1000 1000" aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id="bezel-metal" x1="-500" y1="-500" x2="500" y2="500" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" style="stop-color: var(--metal-hi)"/>
+                  <stop offset="32%" style="stop-color: var(--metal-mid)"/>
+                  <stop offset="68%" style="stop-color: var(--metal-lo)"/>
+                  <stop offset="100%" style="stop-color: var(--metal-hi)"/>
+                </linearGradient>
+                <linearGradient id="gold-trim" x1="-380" y1="-380" x2="380" y2="380" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" style="stop-color: var(--accent-hi)"/>
+                  <stop offset="50%" style="stop-color: var(--accent)"/>
+                  <stop offset="100%" style="stop-color: var(--accent-lo)"/>
+                </linearGradient>
+                <radialGradient id="sheen" cx="-60" cy="-110" r="360" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" style="stop-color: var(--dial-hi)"/>
+                  <stop offset="65%" style="stop-color: var(--dial)"/>
+                  <stop offset="100%" style="stop-color: var(--dial-edge)"/>
+                </radialGradient>
+                <radialGradient id="crystal-glint" cx="-180" cy="-210" r="460" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" style="stop-color: var(--glint); stop-opacity: 0.22"/>
+                  <stop offset="45%" style="stop-color: var(--glint); stop-opacity: 0.04"/>
+                  <stop offset="100%" style="stop-color: var(--glint); stop-opacity: 0"/>
+                </radialGradient>
+                <g id="paths"></g>
+              </defs>
 
-          <g id="ring"></g>
-          <g id="numerals"></g>
-          <circle class="rule" r="300"/>
-          <circle class="rule" r="392"/>
+              <!-- Outer luxury horological case -->
+              <circle class="case-outer" r="498"/>
+              <circle class="face" r="492"/>
+              <circle class="disc" r="300"/>
+              <g class="guilloche" id="guilloche"></g>
+              <g class="sunburst" id="sunburst"></g>
+              <g class="track" id="track"></g>
+              <g class="seconds" id="seconds">
+                <path d="M0 -271 L-6.5 -252 L0 -245 L6.5 -252 Z"/>
+              </g>
 
-          <g id="turn"></g>
-          <circle class="bezel" r="496"/>
-          <g id="cities"></g>
+              <!-- 24-hour celestial ring -->
+              <g id="ring"></g>
+              <g id="numerals"></g>
+              <circle class="rule rule-gold" r="300"/>
+              <circle class="rule rule-gold" r="392"/>
+              <circle class="rule rule-subtle" r="264"/>
 
-          <path class="ref-pointer" d="M-10 -406 L10 -406 L0 -384 Z"/>
-          <path class="ref-pointer" d="M-9 -290 L9 -290 L0 -310 Z"/>
-          <g class="reader" id="reader">
-            <line x1="0" y1="-304" x2="0" y2="-396"/>
-            <path d="M-10 -406 L10 -406 L0 -384 Z"/>
-          </g>
-        </svg>
+              <!-- Rotating outer city bezel -->
+              <g id="turn"></g>
+              <circle class="bezel" r="495"/>
+              <circle class="bezel-inner" r="489"/>
+              <g id="cities"></g>
 
-        <div class="home" role="timer" aria-live="off">
-          <p class="home-city" id="home-city">Jakarta</p>
-          <p class="home-time">
-            <time id="home-time">--:--</time>
-            <span class="home-hang">
-              <span id="home-sec">--</span>
-              <span id="home-ampm" hidden></span>
-            </span>
-          </p>
-          <p class="home-date" id="home-date"></p>
+              <!-- 12 o'clock jewel pointers -->
+              <path class="ref-pointer" d="M-11 -409 L11 -409 L0 -383 Z"/>
+              <path class="ref-pointer" d="M-9 -288 L9 -288 L0 -311 Z"/>
+
+              <!-- Sweeping precision reader caliper -->
+              <g class="reader" id="reader">
+                <line x1="0" y1="-304" x2="0" y2="-396"/>
+                <path d="M-11 -409 L11 -409 L0 -383 Z"/>
+                <circle cx="0" cy="-304" r="4.5"/>
+              </g>
+
+              <!-- Subtle sapphire crystal specular sheen -->
+              <circle class="crystal-overlay" r="492"/>
+            </svg>
+
+            <div class="home" role="timer" aria-live="off">
+              <p class="home-meta">
+                <span class="home-phase-icon" id="home-phase-icon" aria-hidden="true"></span>
+                <span id="home-gmt">GMT+7</span>
+              </p>
+              <p class="home-city" id="home-city">Jakarta</p>
+              <p class="home-time">
+                <time id="home-time">--:--</time>
+                <span class="home-hang">
+                  <span id="home-sec">--</span>
+                  <span id="home-ampm" hidden></span>
+                </span>
+              </p>
+              <p class="home-date" id="home-date"></p>
+            </div>
+          </div>
         </div>
+
+        <div class="caption-card">
+          <p class="caption">
+            <span id="caption">Western Indonesia Time (WIB), GMT+7. Bangkok, Hanoi and Phnom&nbsp;Penh share this time.</span>
+            <button type="button" class="link-button" id="go-home" hidden>Back to Jakarta</button>
+          </p>
+        </div>
+
+        <div class="plan glass-card">
+          <div class="plan-head">
+            <label for="plan">Time travel</label>
+            <output id="plan-out" for="plan">Showing live time</output>
+            <button type="button" id="plan-reset" hidden>Back to now</button>
+          </div>
+          <input type="range" id="plan" min="-720" max="720" step="15" value="0">
+          <div class="plan-scale" aria-hidden="true">
+            <span>−12h</span>
+            <span>−6h</span>
+            <span>Now</span>
+            <span>+6h</span>
+            <span>+12h</span>
+          </div>
+          <div class="plan-presets" aria-label="Quick time jumps">
+            <button type="button" class="preset-chip" data-shift="-360">−6h</button>
+            <button type="button" class="preset-chip" data-shift="-180">−3h</button>
+            <button type="button" class="preset-chip is-active" data-shift="0">Now</button>
+            <button type="button" class="preset-chip" data-shift="180">+3h</button>
+            <button type="button" class="preset-chip" data-shift="360">+6h</button>
+            <button type="button" class="preset-chip" data-shift="720">+12h</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="elsewhere glass-card" aria-label="Cities">
+        <div class="panel-header">
+          <div class="panel-title-row">
+            <h2 class="panel-title">Observatory Index</h2>
+            <span class="panel-utc" id="panel-utc">UTC --:--</span>
+          </div>
+          <div class="search-wrap">
+            <svg class="search-icon" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7">
+              <circle cx="9" cy="9" r="5.5"/>
+              <path d="M13.5 13.5L17 17" stroke-linecap="round"/>
+            </svg>
+            <input type="search" id="city-search" class="search-input" placeholder="Search city, zone, or Grand Prix…" aria-label="Filter cities">
+          </div>
+          <div class="filter-pills" role="group" aria-label="Filter city groups">
+            <button type="button" class="filter-pill is-active" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="filter-pill" data-filter="indonesia" aria-pressed="false">Indonesia</button>
+            <button type="button" class="filter-pill" data-filter="world" aria-pressed="false">World</button>
+            <button type="button" class="filter-pill" data-filter="f1" aria-pressed="false">F1 2027</button>
+          </div>
+        </div>
+
+        <div class="panel-lists">
+          <div class="city-group" data-group="indonesia">
+            <h3 id="indonesia-head"><span>Indonesia</span><span class="group-count">3</span></h3>
+            <ul class="cities" id="list-indonesia" aria-labelledby="indonesia-head"></ul>
+          </div>
+
+          <div class="city-group" data-group="world">
+            <h3 id="world-head"><span>Around the world</span><span class="group-count">8</span></h3>
+            <ul class="cities" id="list-world" aria-labelledby="world-head"></ul>
+          </div>
+
+          <div class="city-group" data-group="f1">
+            <h3 id="f1-head"><span>Formula 1 2027</span><span class="group-count">24</span></h3>
+            <ul class="cities" id="list-f1" aria-labelledby="f1-head"></ul>
+          </div>
+
+          <p class="search-empty" id="search-empty" hidden>No matching cities or circuits found.</p>
+        </div>
+
+        <p class="hint">
+          <span class="hint-pointer">Hover any city to sweep the caliper across the dial. Click to set the timepiece there.</span>
+          <span class="hint-touch">Tap any city to set the timepiece there.</span>
+        </p>
+      </section>
+    </div>
+
+    <!-- PAGE 2: WORLD ATLAS GALLERY -->
+    <section class="view atlas-view" id="view-atlas" aria-labelledby="atlas-heading" hidden>
+      <header class="view-hero glass-card">
+        <div class="view-hero-copy">
+          <p class="eyebrow">Live Solar Meridian Gallery</p>
+          <h2 id="atlas-heading">World Atlas</h2>
+          <p class="view-lead" id="atlas-summary">Every destination illuminated by its real-time local sky, measured against Jakarta.</p>
+        </div>
+        <div class="view-hero-meta">
+          <div class="hero-stat">
+            <span class="hero-stat-label">Reference Meridian</span>
+            <strong class="hero-stat-value" id="atlas-ref-city">Jakarta · GMT+7</strong>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-label">Reference Time</span>
+            <strong class="hero-stat-value tabular" id="atlas-ref-time">--:--</strong>
+          </div>
+        </div>
+      </header>
+
+      <div class="atlas-section">
+        <div class="section-head">
+          <h3>Indonesian Archipelago</h3>
+          <span class="section-sub">Three Time Zones · WIB · WITA · WIT</span>
+        </div>
+        <div class="atlas-grid atlas-grid-id" id="atlas-indonesia"></div>
       </div>
 
-      <p class="caption">
-        <span id="caption">Western Indonesia Time (WIB), GMT+7. Bangkok, Hanoi and Phnom&nbsp;Penh share this time.</span>
-        <button type="button" class="link-button" id="go-home" hidden>Back to Jakarta</button>
-      </p>
-
-      <div class="plan">
-        <div class="plan-head">
-          <label for="plan">Plan a time</label>
-          <output id="plan-out" for="plan">Showing now</output>
-          <button type="button" id="plan-reset" hidden>Back to now</button>
+      <div class="atlas-section">
+        <div class="section-head">
+          <h3>Global Meridians</h3>
+          <span class="section-sub">Sorted furthest ahead to behind</span>
         </div>
-        <input type="range" id="plan" min="-720" max="720" step="15" value="0">
-        <div class="plan-scale" aria-hidden="true"><span>12 hours earlier</span><span>Now</span><span>12 hours later</span></div>
+        <div class="atlas-grid" id="atlas-world"></div>
       </div>
     </section>
 
-    <section class="elsewhere" aria-label="Cities">
-      <h2 id="indonesia-head">Indonesia</h2>
-      <ul class="cities" id="list-indonesia" aria-labelledby="indonesia-head"></ul>
-      <h2 id="world-head">Around the world</h2>
-      <ul class="cities" id="list-world" aria-labelledby="world-head"></ul>
-      <h2 id="f1-head">Formula 1 2027</h2>
-      <ul class="cities" id="list-f1" aria-labelledby="f1-head"></ul>
-      <p class="hint">
-        <span class="hint-pointer">Point at a city to find it on the dial. Click it to set the clock there.</span>
-        <span class="hint-touch">Tap a city to set the clock there.</span>
-      </p>
+    <!-- PAGE 3: FORMULA 1 2027 GRAND PRIX CHRONOMETER -->
+    <section class="view f1-view" id="view-f1" aria-labelledby="f1-heading" hidden>
+      <header class="view-hero glass-card f1-hero">
+        <div class="view-hero-copy">
+          <p class="eyebrow">2027 Championship World Timer</p>
+          <h2 id="f1-heading">Formula 1 Season</h2>
+          <p class="view-lead" id="f1-summary">24 Grands Prix from Sakhir to Abu Dhabi — live local paddock time compared with Jakarta.</p>
+        </div>
+        <div class="f1-hero-tools">
+          <div class="search-wrap">
+            <svg class="search-icon" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7">
+              <circle cx="9" cy="9" r="5.5"/>
+              <path d="M13.5 13.5L17 17" stroke-linecap="round"/>
+            </svg>
+            <input type="search" id="f1-search" class="search-input" placeholder="Find race, country, or round…" aria-label="Filter Formula 1 circuits">
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-label">Calendar Span</span>
+            <strong class="hero-stat-value">24 Rounds · Mar–Dec</strong>
+          </div>
+        </div>
+      </header>
+
+      <div class="f1-grid" id="f1-grid"></div>
+      <p class="search-empty" id="f1-empty" hidden>No matching Grand Prix circuits found.</p>
     </section>
   </main>
 </body>

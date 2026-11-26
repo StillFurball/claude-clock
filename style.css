@@ -1,8 +1,11 @@
-/* Registered so the sky can fade between states. They are set on the .sky
-   layer only (by sky.js), so a fade repaints that layer and nothing else. */
-@property --sky-top { syntax: "<color>"; inherits: true; initial-value: #c6dbee; }
-@property --sky-bottom { syntax: "<color>"; inherits: true; initial-value: #ecf1ee; }
-@property --glow { syntax: "<color>"; inherits: true; initial-value: #fff4d8; }
+/* ==========================================================================
+   WORLD TIME · HAUTE HORLOGERIE OBSERVATORY
+   ========================================================================== */
+
+/* Registered custom properties so the atmospheric sky fades smoothly. */
+@property --sky-top { syntax: "<color>"; inherits: true; initial-value: #c8ddef; }
+@property --sky-bottom { syntax: "<color>"; inherits: true; initial-value: #eff2ec; }
+@property --glow { syntax: "<color>"; inherits: true; initial-value: #fff5dc; }
 @property --glow-a { syntax: "<number>"; inherits: true; initial-value: 0; }
 @property --sun-a { syntax: "<number>"; inherits: true; initial-value: 0; }
 @property --stars { syntax: "<number>"; inherits: true; initial-value: 0; }
@@ -10,72 +13,138 @@
 @property --sun-y { syntax: "<percentage>"; inherits: true; initial-value: 20%; }
 
 :root {
-  --dial: #e3e5e0;
-  --dial-hi: #f3f4f0;
-  --dial-sunk: #d7dad4;
-  --rule: #b6bcc4;
-  --ink: #1a2744;
-  --ink-soft: #505b70;
-  --day: #f6f7f3;
-  --night: #1a2744;
-  --on-day: #1a2744;
-  --on-night: #d9dee8;
-  --on-twilight: #1a2744;
-  --home: #c3291c;
-  --blued: #2b54b6;
-  --sun: #fffaf0;
-  --dial-shadow: 0 34px 70px -24px rgb(26 39 68 / 0.38), 0 2px 6px rgb(26 39 68 / 0.12);
+  /* Champagne Porcelain Daylight Theme (4.5:1+ text, 3:1+ UI boundaries) */
+  --dial: #f1eee7;
+  --dial-hi: #fbf9f4;
+  --dial-edge: #dfd9cc;
+  --dial-sunk: #e5e0d4;
 
-  --gutter: clamp(16px, 4vw, 56px);
+  --metal-hi: #fffcf5;
+  --metal-mid: #cbb894;
+  --metal-lo: #8b744d;
+
+  --accent: #875b14;
+  --accent-hi: #bd8d3b;
+  --accent-lo: #63410b;
+
+  --rule: #a9a295;
+  --ink: #16213a;
+  --ink-soft: #434e66;
+  --day: #faf7f0;
+  --night: #121c36;
+  --on-day: #16213a;
+  --on-night: #e5e9f2;
+  --on-twilight: #16213a;
+  --home: #b5241b;
+  --blued: #1f4aa8;
+  --sun: #fffaf0;
+  --glint: #ffffff;
+
+  /* Frosted Observatory Glass */
+  --surface: rgb(252 250 245 / 0.78);
+  --surface-strong: rgb(253 251 247 / 0.92);
+  --surface-hover: rgb(255 253 249 / 0.94);
+  --surface-border: rgb(22 33 58 / 0.22);
+  --surface-border-strong: rgb(22 33 58 / 0.42);
+  --surface-highlight: rgb(255 255 255 / 0.72);
+  --card-shadow:
+    0 24px 54px -26px rgb(22 33 58 / 0.28),
+    0 2px 10px -2px rgb(22 33 58 / 0.08),
+    inset 0 1px 0 var(--surface-highlight);
+
+  --dial-shadow:
+    0 40px 85px -24px rgb(22 33 58 / 0.42),
+    0 12px 28px -10px rgb(22 33 58 / 0.2),
+    0 0 0 1px rgb(139 116 77 / 0.4);
+
+  --font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-clock: "Archivo", "Arial Narrow", system-ui, sans-serif;
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+  --gutter: clamp(16px, 3.6vw, 48px);
+  --max-width: 1340px;
+
   color-scheme: light;
+  accent-color: var(--blued);
+  scrollbar-color: var(--ink-soft) transparent;
 }
 
-/* Night tokens, used when sky.js says it's night in the selected city, and
-   as the dark-mode fallback before it has run. */
+/* Midnight Sapphire & Champagne Gold Nocturne Theme */
 :root[data-theme="night"] {
-  --dial: #111829;
-  --dial-hi: #1e2945;
-  --dial-sunk: #1a2338;
-  --rule: #34405a;
-  --ink: #dfe2dc;
-  --ink-soft: #a9b1c0;
-  --day: #b9bfc9;
-  --night: #070b16;
-  --on-day: #111829;
-  --on-night: #c3cad6;
-  --on-twilight: #edf0f5;
-  --home: #ff6a55;
-  --blued: #86a6ff;
-  --sun: #9db4ff;
-  --dial-shadow: 0 0 90px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.04);
+  --dial: #0f172b;
+  --dial-hi: #1b2847;
+  --dial-edge: #080d1a;
+  --dial-sunk: #18233d;
+
+  --metal-hi: #f2dfb7;
+  --metal-mid: #b8985f;
+  --metal-lo: #604c2b;
+
+  --accent: #e0b973;
+  --accent-hi: #f5d89e;
+  --accent-lo: #9c793b;
+
+  --rule: #415072;
+  --ink: #eef0ea;
+  --ink-soft: #b2bdd2;
+  --day: #c9cfd9;
+  --night: #060a15;
+  --on-day: #0f172b;
+  --on-night: #d9e0ec;
+  --on-twilight: #f4f6fa;
+  --home: #ff715e;
+  --blued: #8eb0ff;
+  --sun: #a8bfff;
+  --glint: #d8e5ff;
+
+  --surface: rgb(14 22 41 / 0.76);
+  --surface-strong: rgb(16 25 46 / 0.92);
+  --surface-hover: rgb(25 38 68 / 0.88);
+  --surface-border: rgb(224 185 115 / 0.28);
+  --surface-border-strong: rgb(224 185 115 / 0.56);
+  --surface-highlight: rgb(255 245 220 / 0.12);
+  --card-shadow:
+    0 28px 64px -24px rgb(0 0 0 / 0.65),
+    0 2px 12px rgb(0 0 0 / 0.35),
+    inset 0 1px 0 var(--surface-highlight);
+
+  --dial-shadow:
+    0 32px 96px -12px rgb(0 0 0 / 0.78),
+    0 0 60px -18px rgb(224 185 115 / 0.24),
+    0 0 0 1px rgb(224 185 115 / 0.32);
+
   color-scheme: dark;
+  accent-color: var(--accent);
+  scrollbar-color: var(--accent-lo) transparent;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --dial: #111829;
-    --dial-hi: #1e2945;
-    --dial-sunk: #1a2338;
-    --rule: #34405a;
-    --ink: #dfe2dc;
-    --ink-soft: #a9b1c0;
-    --day: #b9bfc9;
-    --night: #070b16;
-    --on-day: #111829;
-    --on-night: #c3cad6;
-    --on-twilight: #edf0f5;
-    --home: #ff6a55;
-    --blued: #86a6ff;
-    --sun: #9db4ff;
+    --dial: #0f172b;
+    --dial-hi: #1b2847;
+    --dial-edge: #080d1a;
+    --dial-sunk: #18233d;
+    --rule: #415072;
+    --ink: #eef0ea;
+    --ink-soft: #b2bdd2;
+    --accent: #e0b973;
+    --home: #ff715e;
+    --blued: #8eb0ff;
     color-scheme: dark;
   }
 }
 
-/* Day/night theme flips crossfade the whole page on the compositor. */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0.7s;
-  animation-timing-function: ease-in-out;
+/* Smooth crossfade View Transitions (opt-in for motion preference) */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.55s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
 }
 
 *,
@@ -93,55 +162,19 @@ body {
   margin: 0;
   min-height: 100svh;
   color: var(--ink);
-  font-family: Archivo, "Arial Narrow", system-ui, sans-serif;
+  font-family: var(--font-sans);
   font-size: 1rem;
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* The sky over the selected city: a top-to-bottom wash, a horizon glow at
-   dawn and dusk, and a soft sun that crosses the page during the day. */
-.sky,
-.sky::after {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
+::selection {
+  background: color-mix(in oklab, var(--accent) 28%, transparent);
+  color: var(--ink);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .sky {
-    --sky-top: #070b16;
-    --sky-bottom: #111a30;
-  }
-}
-
-.sky {
-  background:
-    radial-gradient(ellipse 55% 45% at var(--sun-x) var(--sun-y),
-      color-mix(in srgb, var(--sun) calc(var(--sun-a) * 55%), transparent), transparent 70%),
-    radial-gradient(ellipse 85% 38% at 50% 100%,
-      color-mix(in srgb, var(--glow) calc(var(--glow-a) * 100%), transparent), transparent 75%),
-    linear-gradient(var(--sky-top), var(--sky-bottom));
-}
-
-.sky.is-fading {
-  transition-property: --sky-top, --sky-bottom, --glow, --glow-a, --sun-a, --stars, --sun-x, --sun-y;
-  transition-duration: 1.2s;
-  transition-timing-function: ease-in-out;
-}
-
-/* Stars, tiled at uneven sizes so the pattern doesn't read as a grid. */
-.sky::after {
-  content: "";
-  background-image:
-    radial-gradient(1.4px 1.4px at 37px 52px, #fff 50%, transparent),
-    radial-gradient(1px 1px at 161px 23px, #fff 50%, transparent),
-    radial-gradient(1.8px 1.8px at 88px 141px, #fff 50%, transparent),
-    radial-gradient(1px 1px at 219px 187px, #fff 50%, transparent),
-    radial-gradient(1.2px 1.2px at 301px 96px, #fff 50%, transparent);
-  background-size: 211px 211px, 263px 263px, 347px 347px, 239px 239px, 401px 401px;
-  opacity: calc(var(--stars) * 0.55);
-  mask-image: linear-gradient(#000 25%, transparent 80%);
+.tabular {
+  font-variant-numeric: tabular-nums;
 }
 
 .sr-only {
@@ -158,39 +191,208 @@ body {
   outline-offset: 2px;
 }
 
-/* Header */
+[hidden] {
+  display: none !important;
+}
+
+/* ==========================================================================
+   ATMOSPHERIC CELESTIAL SKY
+   ========================================================================== */
+
+.sky,
+.sky::before,
+.sky::after {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .sky {
+    --sky-top: #050914;
+    --sky-bottom: #0e1830;
+  }
+}
+
+.sky {
+  background:
+    radial-gradient(ellipse 58% 46% at var(--sun-x) var(--sun-y),
+      color-mix(in oklab, var(--sun) calc(var(--sun-a) * 58%), transparent), transparent 72%),
+    radial-gradient(ellipse 92% 42% at 50% 102%,
+      color-mix(in oklab, var(--glow) calc(var(--glow-a) * 100%), transparent), transparent 76%),
+    linear-gradient(180deg, var(--sky-top), var(--sky-bottom));
+}
+
+/* Subtle celestial zenith sheen */
+.sky::before {
+  content: "";
+  background:
+    radial-gradient(circle at 18% 12%, color-mix(in oklab, var(--accent) 12%, transparent), transparent 46%),
+    radial-gradient(circle at 84% 82%, color-mix(in oklab, var(--blued) 10%, transparent), transparent 48%);
+  opacity: 0.7;
+}
+
+/* Layered multi-prime starfield so no grid pattern is ever visible */
+.sky::after {
+  content: "";
+  background-image:
+    radial-gradient(1.6px 1.6px at 37px 52px, #fff8e7 55%, transparent),
+    radial-gradient(1.1px 1.1px at 161px 23px, #dfe9ff 55%, transparent),
+    radial-gradient(2px 2px at 88px 141px, #ffffff 50%, transparent),
+    radial-gradient(1px 1px at 219px 187px, #ffeed4 55%, transparent),
+    radial-gradient(1.3px 1.3px at 301px 96px, #e3ecff 55%, transparent),
+    radial-gradient(1.5px 1.5px at 134px 274px, #ffffff 50%, transparent);
+  background-size: 211px 211px, 263px 263px, 347px 347px, 239px 239px, 401px 401px, 313px 313px;
+  opacity: calc(var(--stars) * 0.68);
+  mask-image: linear-gradient(#000 30%, transparent 86%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sky.is-fading {
+    transition-property: --sky-top, --sky-bottom, --glow, --glow-a, --sun-a, --stars, --sun-x, --sun-y;
+    transition-duration: 1.2s;
+    transition-timing-function: ease-in-out;
+  }
+}
+
+/* ==========================================================================
+   GLASS CARD PRIMITIVE
+   ========================================================================== */
+
+.glass-card {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(22px) saturate(145%);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+}
+
+/* ==========================================================================
+   FLOATING OBSERVATORY HEADER
+   ========================================================================== */
+
+.top-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  padding: 14px var(--gutter) 8px;
+}
 
 .top {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px 16px;
-  max-width: 1280px;
+  gap: 12px 18px;
+  max-width: var(--max-width);
   margin: 0 auto;
-  padding: 20px var(--gutter);
+  padding: 10px 18px;
+  background: var(--surface-strong);
+  border: 1px solid var(--surface-border);
+  border-radius: 20px;
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
 }
 
-.top h1 {
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 11%, transparent);
+  border: 1px solid color-mix(in oklab, var(--accent) 34%, transparent);
+  flex-shrink: 0;
+}
+
+.brand-copy h1 {
   margin: 0;
-  font-size: 1.3125rem;
-  font-weight: 650;
-  line-height: 1.2;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1;
 }
 
+.brand-sub {
+  margin: 2px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+/* Primary Page Navigation Pill */
+.page-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
+  border: 1px solid var(--surface-border);
+}
+
+.nav-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 6px 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.nav-tab:hover {
+  color: var(--ink);
+  background: color-mix(in oklab, var(--ink) 7%, transparent);
+}
+
+.nav-tab[aria-current="page"] {
+  background: var(--ink);
+  color: var(--dial);
+  border-color: var(--ink);
+  box-shadow: 0 4px 12px -4px rgb(0 0 0 / 0.35);
+}
+
+/* Header Controls */
 .controls {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px 20px;
+  gap: 10px 12px;
 }
 
 .picker {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 0.875rem;
-  font-weight: 500;
+  gap: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.picker-label {
+  letter-spacing: 0.02em;
 }
 
 .picker-field {
@@ -198,50 +400,130 @@ body {
   color: var(--ink);
 }
 
-.picker-field::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 13px;
-  width: 7px;
-  height: 7px;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: translateY(-70%) rotate(45deg);
-  pointer-events: none;
+/* Fallback arrow only when customizable select isn't supported */
+@supports not (appearance: base-select) {
+  .picker-field::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    width: 7px;
+    height: 7px;
+    border-right: 1.6px solid currentColor;
+    border-bottom: 1.6px solid currentColor;
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+}
+
+/* Modern Branded Customizable Select with graceful OS fallback */
+.picker select,
+.picker select::picker(select) {
+  appearance: base-select;
 }
 
 .picker select {
-  appearance: none;
-  min-height: 34px;
-  padding: 5px 36px 5px 12px;
-  border: 1px solid var(--ink);
-  border-radius: 8px;
-  background: transparent;
+  min-height: 36px;
+  inline-size: clamp(168px, 16vw, 224px);
+  padding: 6px 12px;
+  border: 1px solid var(--surface-border-strong);
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--dial) 72%, transparent);
   color: var(--ink);
   font: inherit;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
+  align-items: center;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+@supports not (appearance: base-select) {
+  .picker select {
+    appearance: none;
+    padding-right: 34px;
+  }
+}
+
+.picker select:hover {
+  border-color: var(--accent);
+  background: var(--surface-hover);
+}
+
+.picker select::picker-icon {
+  color: var(--accent);
+  margin-inline-start: auto;
+}
+
+.picker select::picker(select) {
+  margin-block-start: 6px;
+  padding: 6px;
+  max-block-size: min(60vh, 420px);
+  border: 1px solid var(--surface-border-strong);
+  border-radius: 16px;
+  background: var(--dial-hi);
+  color: var(--ink);
+  box-shadow: 0 24px 48px -12px rgb(0 0 0 / 0.35);
 }
 
 .picker select option {
-  background: var(--dial);
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: transparent;
   color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
 }
 
+.picker select option:hover,
+.picker select option:focus {
+  background: color-mix(in oklab, var(--accent) 16%, transparent);
+}
+
+.picker select option:checked {
+  background: color-mix(in oklab, var(--accent) 20%, transparent);
+  font-weight: 700;
+}
+
+.picker select option::checkmark {
+  color: var(--accent);
+}
+
+/* 24h / 12h Radio Segmented Toggle (styled with :has(:checked)) */
 .format {
-  display: flex;
+  display: inline-flex;
   margin: 0;
-  padding: 0;
-  border: 1px solid var(--ink);
-  border-radius: 8px;
-  overflow: hidden;
+  padding: 3px;
+  gap: 2px;
+  border: 1px solid var(--surface-border-strong);
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--ink) 5%, transparent);
 }
 
 .format label {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0 11px;
+  border-radius: var(--radius-pill);
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.format label:has(:checked) {
+  background: var(--ink);
+  color: var(--dial);
+}
+
+.format label:has(:focus-visible) {
+  outline: 2px solid var(--blued);
+  outline-offset: 1px;
 }
 
 .format input {
@@ -252,64 +534,137 @@ body {
   cursor: pointer;
 }
 
-.format span {
-  display: block;
-  padding: 6px 14px;
+/* Atmosphere Theme Toggle */
+.sky-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 13px;
+  border: 1px solid var(--surface-border-strong);
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--accent) 10%, transparent);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.sky-toggle:hover {
+  border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 18%, transparent);
+}
+
+.sky-toggle-icon {
+  display: inline-flex;
+  color: var(--accent);
+}
+
+/* Global Time-Travel Banner (shown on Atlas/F1 views when scrubbing) */
+.plan-banner-wrap {
+  max-width: var(--max-width);
+  margin: 6px auto 0;
+  padding: 0 var(--gutter);
+}
+
+.plan-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  background: color-mix(in oklab, var(--blued) 14%, var(--surface-strong));
+  border: 1px solid color-mix(in oklab, var(--blued) 45%, transparent);
+  color: var(--ink);
   font-size: 0.875rem;
-  font-weight: 500;
-  font-stretch: 90%;
+  font-weight: 600;
 }
 
-.format input:checked + span {
-  background: var(--ink);
-  color: var(--dial);
+.plan-banner-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--blued);
+  flex-shrink: 0;
 }
 
-.format input:focus-visible + span {
-  outline: 2px solid var(--blued);
-  outline-offset: -4px;
+.plan-banner > span:nth-child(2) {
+  flex: 1;
 }
 
-/* Layout */
+.pill-button {
+  min-height: 32px;
+  padding: 4px 14px;
+  border: 1px solid var(--surface-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-strong);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pill-button:hover {
+  border-color: var(--accent);
+}
+
+/* ==========================================================================
+   MAIN STAGE & CHRONOMETER LAYOUT
+   ========================================================================== */
+
+.stage {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 14px var(--gutter) 64px;
+}
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
+  grid-template-columns: minmax(0, 1.15fr) minmax(340px, 430px);
   align-items: start;
-  gap: clamp(32px, 5vw, 88px);
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 var(--gutter) 48px;
+  gap: clamp(24px, 4vw, 56px);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 980px) {
   .dial-col {
     position: sticky;
-    top: 24px;
+    top: 96px;
   }
 }
 
-@media (max-width: 899px) {
+@media (max-width: 979px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
-/* Dial */
+/* ==========================================================================
+   HAUTE HORLOGERIE WORLD TIMER DIAL
+   ========================================================================== */
+
+.dial-pedestal {
+  position: relative;
+  padding: 6px;
+}
 
 .dial {
   container: dial / inline-size;
   position: relative;
-  width: min(100%, 720px, max(300px, calc(100svh - 150px)));
+  width: min(100%, 640px, max(300px, calc(100svh - 270px)));
   aspect-ratio: 1;
   margin-inline: auto;
 }
 
-/* The dial is an object in front of the sky, so it casts a soft shadow. */
+/* Sculpted depth & luxury metallic aura behind the watch case */
 .dial::before {
   content: "";
   position: absolute;
-  inset: 0.3%;
+  inset: 0.4%;
   border-radius: 50%;
   box-shadow: var(--dial-shadow);
   pointer-events: none;
@@ -323,13 +678,9 @@ body {
   overflow: visible;
 }
 
-.bezel {
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 2.5;
+.case-outer {
+  fill: url(#bezel-metal);
 }
-
-/* Dial finish */
 
 .face {
   fill: var(--dial);
@@ -339,25 +690,64 @@ body {
   fill: url(#sheen);
 }
 
+.bezel {
+  fill: none;
+  stroke: url(#bezel-metal);
+  stroke-width: 7;
+}
+
+.bezel-inner {
+  fill: none;
+  stroke: var(--ink);
+  stroke-opacity: 0.24;
+  stroke-width: 1.5;
+}
+
+.crystal-overlay {
+  fill: url(#crystal-glint);
+  pointer-events: none;
+}
+
+.guilloche circle {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.9;
+  opacity: 0.055;
+}
+
 .sunburst line {
   stroke: var(--ink);
-  stroke-width: 1.4;
-  opacity: 0.05;
+  stroke-width: 1.2;
+  opacity: 0.045;
 }
 
 .track line {
   stroke: var(--rule);
-  stroke-width: 1.5;
+  stroke-width: 1.4;
 }
 
 .track .is-five {
   stroke: var(--ink-soft);
-  stroke-width: 2.5;
+  stroke-width: 2.3;
+}
+
+.track .cardinal-jewel {
+  fill: url(#gold-trim);
+  stroke: var(--dial);
+  stroke-width: 0.8;
 }
 
 .seconds {
-  fill: var(--ink);
-  transition: transform 0.28s cubic-bezier(0.4, 2.2, 0.6, 1);
+  fill: url(#gold-trim);
+  stroke: var(--ink);
+  stroke-opacity: 0.28;
+  stroke-width: 0.7;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .seconds {
+    transition: transform 0.28s cubic-bezier(0.35, 2.05, 0.58, 1);
+  }
 }
 
 .is-planning .seconds {
@@ -371,25 +761,34 @@ body {
 
 .fine-tick {
   stroke: var(--rule);
-  stroke-width: 1.2;
+  stroke-width: 1.15;
 }
 
 .home-tick {
   stroke: var(--home);
-  stroke-width: 5;
+  stroke-width: 5.5;
   stroke-linecap: round;
+}
+
+.ring-star {
+  fill: var(--accent-hi);
+  opacity: 0.78;
 }
 
 .glyph.sun circle,
 .glyph.sun line {
   fill: none;
-  stroke: var(--on-day);
+  stroke: var(--accent);
   stroke-width: 3;
   stroke-linecap: round;
 }
 
+.glyph.sun circle {
+  fill: color-mix(in oklab, var(--accent) 28%, transparent);
+}
+
 .moon-lit {
-  fill: var(--on-night);
+  fill: var(--accent-hi);
 }
 
 .moon-shade {
@@ -402,12 +801,25 @@ body {
   stroke-width: 1.5;
 }
 
+.rule-gold {
+  stroke: url(#gold-trim);
+  stroke-width: 2.2;
+}
+
+.rule-subtle {
+  stroke: var(--rule);
+  stroke-width: 1;
+  stroke-dasharray: 2 5;
+  opacity: 0.55;
+}
+
 .tick {
-  stroke-width: 2.5;
+  stroke-width: 2.4;
 }
 
 .tick.is-half {
-  stroke-width: 1.5;
+  stroke-width: 1.3;
+  opacity: 0.72;
 }
 
 .tick.on-day {
@@ -423,8 +835,9 @@ body {
 }
 
 .numeral {
-  font-size: 30px;
-  font-stretch: 75%;
+  font-family: var(--font-clock);
+  font-size: 29px;
+  font-stretch: 76%;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   text-anchor: middle;
@@ -446,11 +859,13 @@ body {
 
 .city-label {
   fill: var(--ink);
-  font-size: 25px;
+  font-family: var(--font-clock);
+  font-size: 24px;
   font-stretch: 78%;
-  font-weight: 450;
+  font-weight: 500;
+  letter-spacing: 0.03em;
   text-anchor: middle;
-  transition: opacity 0.25s, fill 0.25s;
+  transition: opacity 0.22s, fill 0.22s;
 }
 
 .city-label.is-home {
@@ -460,12 +875,12 @@ body {
 
 .city-label.short {
   display: none;
-  font-size: 34px;
-  font-stretch: 90%;
-  font-weight: 550;
+  font-size: 33px;
+  font-stretch: 88%;
+  font-weight: 600;
 }
 
-@container dial (max-width: 460px) {
+@container dial (max-width: 450px) {
   .city-label.long {
     display: none;
   }
@@ -475,7 +890,7 @@ body {
   }
 
   .numeral {
-    font-size: 40px;
+    font-size: 38px;
   }
 }
 
@@ -487,26 +902,33 @@ body {
   fill: var(--blued);
 }
 
-/* Red marks GMT+7; away from home the 12 o'clock pointers turn to ink. */
 .ref-pointer {
   fill: var(--home);
+  stroke: var(--dial);
+  stroke-width: 1.4;
 }
 
 .is-away .ref-pointer {
-  fill: var(--ink);
+  fill: url(#gold-trim);
 }
 
 .reader {
   opacity: 0;
-  transition: transform 0.55s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.2s;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reader {
+    transition: transform 0.52s cubic-bezier(0.28, 0.72, 0.2, 1), opacity 0.2s;
+  }
 }
 
 .reader line {
   stroke: var(--blued);
-  stroke-width: 3;
+  stroke-width: 3.2;
 }
 
-.reader path {
+.reader path,
+.reader circle {
   fill: var(--blued);
 }
 
@@ -515,16 +937,15 @@ body {
 }
 
 .is-reading .city-label:not(.is-target, .is-home) {
-  opacity: 0.28;
+  opacity: 0.26;
 }
 
 .city-label.is-target {
   fill: var(--blued);
-  font-weight: 650;
+  font-weight: 700;
 }
 
-/* The selected city, in the middle of the dial */
-
+/* Center Medallion Readout */
 .home {
   position: absolute;
   inset: 0;
@@ -532,6 +953,7 @@ body {
   place-content: center;
   justify-items: center;
   text-align: center;
+  padding: 22%;
   pointer-events: none;
 }
 
@@ -539,10 +961,35 @@ body {
   margin: 0;
 }
 
-.home-city {
-  font-size: max(14px, 3.4cqi);
+.home-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 0.8cqi;
+  padding: 0.55cqi 2.2cqi;
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in oklab, var(--accent) 42%, transparent);
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+  color: var(--ink-soft);
+  font-size: max(11px, 2.05cqi);
   font-weight: 700;
-  line-height: 1.2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.home-phase-icon {
+  display: inline-flex;
+  color: var(--accent);
+}
+
+.home-city {
+  max-width: 100%;
+  font-family: var(--font-serif);
+  font-size: clamp(16px, 4.4cqi, 30px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
 }
 
 .home-city.is-home {
@@ -551,106 +998,408 @@ body {
 
 .home-time {
   position: relative;
-  margin: 0.4cqi 0 1.2cqi;
-  font-size: 18cqi;
-  font-stretch: 62%;
-  font-weight: 250;
+  margin: 0.6cqi 0 1.3cqi;
+  font-family: var(--font-clock);
+  font-size: 16.4cqi;
+  font-stretch: 64%;
+  font-weight: 260;
   line-height: 0.92;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 
 .home-hang {
   position: absolute;
-  top: 0.13em;
-  left: calc(100% + 0.05em);
+  top: 0.14em;
+  left: calc(100% + 0.06em);
   display: grid;
-  font-size: 0.19em;
-  font-stretch: 75%;
-  font-weight: 450;
+  font-size: 0.195em;
+  font-stretch: 80%;
+  font-weight: 500;
   line-height: 1.15;
   text-align: left;
+  color: var(--ink-soft);
 }
 
 .home-date {
   color: var(--ink-soft);
-  font-size: max(13px, 2.8cqi);
-  line-height: 1.3;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: max(14px, 3.15cqi);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* Caption Ribbon */
+.caption-card {
+  max-width: 560px;
+  margin: 18px auto 0;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .caption {
-  max-width: 46ch;
-  margin: 20px auto 0;
+  margin: 0;
   color: var(--ink-soft);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   text-align: center;
   text-wrap: balance;
 }
 
 .link-button {
-  margin-left: 4px;
-  padding: 2px 0;
-  border: 0;
-  background: none;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border: 1px solid color-mix(in oklab, var(--blued) 45%, transparent);
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--blued) 10%, transparent);
   color: var(--blued);
   font: inherit;
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  font-size: 0.8125rem;
+  font-weight: 700;
   cursor: pointer;
 }
 
-/* City list */
-
-.elsewhere h2 {
-  margin: 32px 0 6px;
-  color: var(--ink-soft);
-  font-size: 1rem;
-  font-weight: 600;
+.link-button:hover {
+  background: color-mix(in oklab, var(--blued) 18%, transparent);
 }
 
-.elsewhere h2:first-child {
-  margin-top: 0;
+/* ==========================================================================
+   TIME TRAVEL SCRUBBER CARD
+   ========================================================================== */
+
+.plan {
+  width: min(100%, 560px);
+  margin: 14px auto 0;
+  padding: 16px 20px 18px;
+}
+
+.plan-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+}
+
+.plan-head label {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.plan-head output {
+  flex: 1;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.is-planning .plan-head output {
+  color: var(--blued);
+  font-weight: 700;
+}
+
+.plan-head button {
+  min-height: 30px;
+  padding: 4px 12px;
+  border: 1px solid var(--surface-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-strong);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.plan-head button:hover {
+  border-color: var(--accent);
+}
+
+/* Bespoke Horological Range Slider (appearance: none + thumb/track) */
+.plan input[type="range"] {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 34px;
+  margin: 8px 0 4px;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.plan input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--night) 45%, var(--rule)) 0%,
+    color-mix(in oklab, var(--accent) 55%, var(--rule)) 50%,
+    color-mix(in oklab, var(--night) 45%, var(--rule)) 100%
+  );
+  border: 1px solid var(--surface-border);
+}
+
+.plan input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 32%, var(--accent-hi), var(--accent));
+  border: 2px solid var(--dial-hi);
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.35);
+}
+
+.plan input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--accent) 36%, var(--rule));
+  border: 1px solid var(--surface-border);
+}
+
+.plan input[type="range"]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 32%, var(--accent-hi), var(--accent));
+  border: 2px solid var(--dial-hi);
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.35);
+}
+
+.plan-scale {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.plan-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.preset-chip {
+  flex: 1 1 auto;
+  min-height: 30px;
+  padding: 4px 10px;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--ink) 5%, transparent);
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color 0.18s, color 0.18s, border-color 0.18s;
+}
+
+.preset-chip:hover {
+  color: var(--ink);
+  border-color: var(--accent);
+}
+
+.preset-chip.is-active {
+  background: var(--ink);
+  color: var(--dial);
+  border-color: var(--ink);
+}
+
+.is-planning #home-sec {
+  visibility: hidden;
+}
+
+.is-planning .home-time {
+  color: var(--blued);
+}
+
+/* ==========================================================================
+   OBSERVATORY CITY INDEX PANEL
+   ========================================================================== */
+
+.elsewhere {
+  padding: 20px;
+}
+
+.panel-header {
+  display: grid;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.panel-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.panel-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.panel-utc {
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--surface-border);
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
+  color: var(--ink-soft);
+  font-family: var(--font-clock);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--ink-soft);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 14px 8px 36px;
+  border: 1px solid var(--surface-border-strong);
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--dial) 68%, transparent);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.875rem;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.search-input::placeholder {
+  color: var(--ink-soft);
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+  background: var(--surface-strong);
+}
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filter-pill {
+  min-height: 30px;
+  padding: 4px 12px;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.78125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.18s, color 0.18s, border-color 0.18s;
+}
+
+.filter-pill:hover {
+  color: var(--ink);
+  border-color: var(--accent);
+}
+
+.filter-pill.is-active {
+  background: var(--ink);
+  color: var(--dial);
+  border-color: var(--ink);
+}
+
+.panel-lists {
+  margin-top: 14px;
+  display: grid;
+  gap: 20px;
+}
+
+.city-group h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 8px;
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.group-count {
+  padding: 1px 8px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--ink) 7%, transparent);
+  font-variant-numeric: tabular-nums;
 }
 
 .cities {
   margin: 0;
   padding: 0;
   list-style: none;
-  border-bottom: 1px solid var(--rule);
-}
-
-.cities li {
-  border-top: 1px solid var(--rule);
+  display: grid;
+  gap: 6px;
 }
 
 .city {
   display: grid;
-  grid-template-columns: 12px minmax(0, 1fr) auto;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
   grid-template-areas:
     "swatch name time"
-    ". gap time";
-  column-gap: 14px;
-  align-items: baseline;
+    "swatch gap time";
+  column-gap: 12px;
+  align-items: center;
   width: 100%;
-  padding: 10px 10px 11px;
-  border: 0;
-  background: none;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: color-mix(in oklab, var(--dial) 36%, transparent);
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
   touch-action: manipulation;
+  transition: background-color 0.18s, border-color 0.18s, transform 0.18s;
 }
 
 .city:hover,
-.city:focus {
-  background: var(--dial-sunk);
+.city:focus-visible {
+  background: var(--surface-hover);
+  border-color: var(--surface-border-strong);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .city:hover {
+    transform: translateX(2px);
+  }
 }
 
 .city[aria-pressed="true"] {
-  background: var(--dial-sunk);
-  box-shadow: inset 4px 0 0 var(--ink);
+  background: color-mix(in oklab, var(--accent) 14%, var(--surface-strong));
+  border-color: var(--accent);
 }
 
 .city.is-home .city-name {
@@ -661,44 +1410,55 @@ body {
   outline: none;
 }
 
-.city:focus-visible {
-  outline-offset: -2px;
-}
-
 .city:hover .city-name,
-.city:focus .city-name {
+.city:focus-visible .city-name {
   color: var(--blued);
 }
 
 .swatch {
   grid-area: swatch;
-  align-self: center;
-  width: 12px;
-  height: 12px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1px var(--rule);
+  border: 1px solid var(--surface-border-strong);
+  color: var(--on-day);
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.swatch.is-night {
+  color: var(--on-night);
 }
 
 .city-name {
   grid-area: name;
-  font-size: 1.125rem;
-  font-weight: 550;
-  line-height: 1.3;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .city-gap {
   grid-area: gap;
   color: var(--ink-soft);
-  font-size: 0.875rem;
-  line-height: 1.35;
+  font-size: 0.78125rem;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .city-time {
   grid-area: time;
   align-self: center;
-  font-size: 1.75rem;
+  font-family: var(--font-clock);
+  font-size: 1.6rem;
   font-stretch: 72%;
-  font-weight: 400;
+  font-weight: 450;
   line-height: 1;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -706,15 +1466,28 @@ body {
 
 .city-time .ampm {
   margin-left: 0.2em;
-  font-size: 0.5em;
+  font-size: 0.48em;
   font-stretch: 85%;
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.search-empty {
+  margin: 12px 0;
+  padding: 20px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--surface-border-strong);
 }
 
 .hint {
-  margin: 14px 0 0;
+  margin: 16px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--surface-border);
   color: var(--ink-soft);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
 }
 
 .hint-touch {
@@ -731,100 +1504,550 @@ body {
   }
 }
 
-/* Plan a time */
+/* ==========================================================================
+   SHARED VIEW HERO (WORLD ATLAS & FORMULA 1 2027)
+   ========================================================================== */
 
-.plan {
-  width: min(100%, 480px);
-  margin: 28px auto 0;
+.view-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px 32px;
+  padding: clamp(20px, 3vw, 34px);
+  margin-bottom: 28px;
 }
 
-.plan-head {
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.view-hero h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4.2vw, 3.1rem);
+  font-weight: 700;
+  line-height: 1.04;
+}
+
+.view-lead {
+  margin: 8px 0 0;
+  max-width: 56ch;
+  color: var(--ink-soft);
+  font-size: 0.96875rem;
+}
+
+.view-hero-meta,
+.f1-hero-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+}
+
+.hero-stat {
+  display: grid;
+  gap: 2px;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  background: color-mix(in oklab, var(--dial) 55%, transparent);
+  border: 1px solid var(--surface-border);
+}
+
+.hero-stat-label {
+  color: var(--ink-soft);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hero-stat-value {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   PAGE 2: WORLD ATLAS GALLERY
+   ========================================================================== */
+
+.atlas-section {
+  margin-bottom: 34px;
+}
+
+.section-head {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 4px 12px;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 14px;
 }
 
-.plan-head label {
-  font-weight: 600;
+.section-head h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  font-weight: 700;
 }
 
-.plan-head output {
-  flex: 1;
+.section-sub {
   color: var(--ink-soft);
-  font-size: 0.9375rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.atlas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr));
+  gap: 16px;
+}
+
+.atlas-grid-id {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+}
+
+.atlas-card {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  border-radius: 22px;
+  background: var(--surface-strong);
+  box-shadow: var(--card-shadow);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+}
+
+.atlas-card:hover,
+.atlas-card:focus-visible {
+  border-color: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .atlas-card:hover {
+    transform: translateY(-3px);
+  }
+}
+
+.atlas-card.is-selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 45%, transparent), var(--card-shadow);
+}
+
+.atlas-sky-band {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px 18px;
+  background: linear-gradient(135deg, var(--card-sky-top, var(--dial)), var(--card-sky-bottom, var(--dial-sunk)));
+  color: var(--card-sky-ink, var(--ink));
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.atlas-phase {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.atlas-gmt {
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  background: rgb(0 0 0 / 0.16);
+  font-size: 0.75rem;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
-.is-planning .plan-head output {
-  color: var(--blued);
+.atlas-sky-band.is-light .atlas-gmt {
+  background: rgb(255 255 255 / 0.56);
 }
 
-.plan-head button {
-  min-height: 32px;
-  padding: 4px 12px;
-  border: 1px solid var(--ink);
-  border-radius: 8px;
-  background: transparent;
-  color: var(--ink);
-  font: inherit;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
+.atlas-body {
+  display: grid;
+  gap: 12px;
+  padding: 2px 18px 18px;
 }
 
-.plan-head button:hover {
-  background: var(--dial-sunk);
-}
-
-.plan input {
-  display: block;
-  width: 100%;
-  height: 32px;
-  margin: 6px 0 2px;
-  accent-color: var(--blued);
-  cursor: pointer;
-  touch-action: manipulation;
-}
-
-.plan-scale {
+.atlas-top-row {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
+  gap: 12px;
+}
+
+.atlas-city {
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1.08;
+}
+
+.atlas-card.is-home .atlas-city {
+  color: var(--home);
+}
+
+.atlas-zone-tag {
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--surface-border-strong);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.atlas-clock {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-clock);
+  font-size: 2.75rem;
+  font-stretch: 68%;
+  font-weight: 300;
+  line-height: 0.95;
+  font-variant-numeric: tabular-nums;
+}
+
+.atlas-clock .atlas-ampm {
+  font-size: 0.9rem;
+  font-stretch: 85%;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.atlas-solar-bar {
+  position: relative;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, #0b142c 0%, #0b142c 20%, #e7a97c 28%, #f8eed7 50%, #e7a97c 72%, #0b142c 80%, #0b142c 100%);
+  border: 1px solid var(--surface-border);
+}
+
+.atlas-solar-dot {
+  position: absolute;
+  top: 50%;
+  left: var(--solar-pct, 50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-hi);
+  border: 2px solid var(--dial-hi);
+  box-shadow: 0 1px 6px rgb(0 0 0 / 0.45);
+  transform: translate(-50%, -50%);
+}
+
+.atlas-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
   color: var(--ink-soft);
   font-size: 0.8125rem;
 }
 
-/* While planning, seconds would be fiction, so hide them. */
-.is-planning #home-sec {
-  visibility: hidden;
+.atlas-cta {
+  color: var(--blued);
+  font-weight: 700;
+  white-space: nowrap;
 }
 
-.is-planning .home-time {
-  color: var(--blued);
+/* ==========================================================================
+   PAGE 3: FORMULA 1 2027 GRAND PRIX CALENDAR
+   ========================================================================== */
+
+.f1-hero {
+  border-color: color-mix(in oklab, var(--home) 36%, var(--surface-border));
+}
+
+.f1-hero .eyebrow {
+  color: var(--home);
+}
+
+.f1-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 16px;
+}
+
+.f1-card {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  padding: 18px;
+  border: 1px solid var(--surface-border);
+  border-radius: 20px;
+  background: var(--surface-strong);
+  box-shadow: var(--card-shadow);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+/* Subtle top sky meridian accent bar on each Grand Prix card */
+.f1-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: linear-gradient(90deg, var(--home), var(--card-sky-top, var(--accent)), var(--card-sky-bottom, var(--accent-hi)));
+}
+
+.f1-card:hover,
+.f1-card:focus-visible {
+  border-color: var(--home);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .f1-card:hover {
+    transform: translateY(-3px);
+  }
+}
+
+.f1-card.is-selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 45%, transparent), var(--card-shadow);
+}
+
+.f1-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.f1-round {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--home) 14%, transparent);
+  border: 1px solid color-mix(in oklab, var(--home) 38%, transparent);
+  color: var(--home);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.f1-date {
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.f1-main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.f1-circuit {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.08;
+}
+
+.f1-country {
+  margin-top: 2px;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.f1-code {
+  padding: 3px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--surface-border-strong);
+  font-family: var(--font-clock);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+
+.f1-time-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--surface-border);
+}
+
+.f1-clock {
+  font-family: var(--font-clock);
+  font-size: 2rem;
+  font-stretch: 72%;
+  font-weight: 400;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.f1-clock .f1-ampm {
+  margin-left: 4px;
+  font-size: 0.5em;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.f1-phase-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--surface-border);
+  background: color-mix(in oklab, var(--dial) 55%, transparent);
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.f1-gap {
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE & TOUCH TARGET REFINEMENTS
+   ========================================================================== */
+
+@media (max-width: 780px) {
+  .top {
+    padding: 10px 12px;
+    border-radius: 16px;
+  }
+
+  .page-nav {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav-tab {
+    flex: 1;
+    justify-content: center;
+    padding: 6px 8px;
+    font-size: 0.8125rem;
+  }
+
+  .controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .picker {
+    flex: 1 1 190px;
+  }
+
+  .picker-field,
+  .picker select {
+    inline-size: 100%;
+  }
+
+  .picker-label {
+    display: none;
+  }
 }
 
 @media (pointer: coarse) {
-  .format span {
-    padding: 11px 16px;
-  }
-
-  .picker select {
+  .nav-tab,
+  .picker select,
+  .sky-toggle,
+  .plan-head button,
+  .preset-chip,
+  .filter-pill,
+  .search-input {
     min-height: 44px;
   }
 
-  .plan-head button {
-    min-height: 44px;
+  .format label {
+    min-height: 38px;
+    padding: 0 14px;
   }
 
-  .plan input {
+  .plan input[type="range"] {
     height: 44px;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .reader,
+/* ==========================================================================
+   FORCED COLORS MODE (WINDOWS HIGH CONTRAST ACCESSIBILITY)
+   ========================================================================== */
+
+@media (forced-colors: active) {
+  .glass-card,
+  .top,
+  .caption-card,
+  .atlas-card,
+  .f1-card,
+  .hero-stat,
+  .plan-banner {
+    background: Canvas;
+    color: CanvasText;
+    border: 1px solid CanvasText;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .nav-tab[aria-current="page"],
+  .format label:has(:checked),
+  .filter-pill.is-active,
+  .preset-chip.is-active,
+  .city[aria-pressed="true"],
+  .atlas-card.is-selected,
+  .f1-card.is-selected {
+    background: Highlight;
+    color: HighlightText;
+    border: 2px solid Highlight;
+    outline: 2px solid Highlight;
+  }
+
+  .bezel,
+  .rule,
+  .rule-gold,
+  .slot-tick,
+  .tick {
+    stroke: CanvasText;
+  }
+
+  .numeral,
   .city-label,
+  .ref-pointer,
   .seconds {
-    transition: none;
+    fill: CanvasText;
+  }
+
+  .swatch,
+  .atlas-sky-band,
+  .atlas-solar-bar {
+    forced-color-adjust: none;
+    border: 1px solid CanvasText;
   }
 }

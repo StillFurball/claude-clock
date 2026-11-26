@@ -1,47 +1,57 @@
 'use strict';
 
 // The page background is the sky over the selected city at its local time.
-// With a light system theme the page itself flips light at 06:00 and dark at
-// 18:00, so text always sits on a sky it can be read against: every light-sky
-// colour below stays above ~0.63 relative luminance and every dark one below
-// ~0.05, which keeps secondary text at 4.5:1 or better. With a dark system
-// theme the page stays dark and daytime is a deep blue instead.
+// Every light-sky colour stays above ~0.63 relative luminance and every dark
+// one below ~0.05, keeping secondary text at 4.5:1 contrast or better.
 
 (() => {
-  const NIGHT = { top: '#070b16', bottom: '#111a30', glow: '#3a2a4a', glowA: 0, stars: 1, sun: 0 };
+  const NIGHT = { top: '#050914', bottom: '#0e1830', glow: '#3b2850', glowA: 0, stars: 1, sun: 0 };
   const frame = (h, top, bottom, glow, glowA, stars, sun) => ({ h, top, bottom, glow, glowA, stars, sun });
 
-  // Light system theme. The pairs at 5.999/6 and 17.999/18 are the theme flips.
+  // Light / champagne-sky palette. The pairs at 5.999/6 and 17.999/18 are the theme flips.
   const LIGHT = [
     { h: 0, ...NIGHT },
-    { h: 4.5, ...NIGHT, top: '#080d1b', bottom: '#131c35' },
-    frame(5.5, '#0d1530', '#1d2547', '#7a4558', 0.35, 0.45, 0),
-    frame(5.999, '#121c3f', '#232c52', '#7a4558', 0.45, 0.2, 0),
-    frame(6, '#ccd3e8', '#f0dccc', '#f5c4a2', 0.55, 0, 0.2),
-    frame(7.5, '#cddfee', '#edefe8', '#f7dfc0', 0.25, 0, 0.6),
-    frame(12, '#c6dbee', '#ecf1ee', '#fff4d8', 0, 0, 1),
-    frame(16, '#c9d8ea', '#efeadf', '#f6dcb4', 0.3, 0, 0.8),
-    frame(17.5, '#d6d2e3', '#f3dac4', '#f2b68c', 0.5, 0, 0.35),
-    frame(17.999, '#d8cfde', '#f2d4bf', '#efab84', 0.55, 0, 0.2),
-    frame(18, '#151e40', '#2a2b54', '#7a4558', 0.45, 0.2, 0),
-    frame(19, '#0b1226', '#172040', '#4a3050', 0.2, 0.7, 0),
+    { h: 4.5, ...NIGHT, top: '#070d1d', bottom: '#121d38' },
+    frame(5.5, '#0d1633', '#1e274a', '#8c4e64', 0.4, 0.45, 0),
+    frame(5.999, '#121d42', '#262f58', '#98566a', 0.5, 0.2, 0),
+    frame(6, '#cfd6ea', '#f4e0ce', '#f7c59f', 0.62, 0, 0.25),
+    frame(7.5, '#cddfed', '#f1eee4', '#f8e0be', 0.3, 0, 0.65),
+    frame(12, '#c8ddef', '#eff2ec', '#fff5dc', 0, 0, 1),
+    frame(16, '#cbd9ea', '#f2ebde', '#f7ddb4', 0.32, 0, 0.8),
+    frame(17.5, '#d9d3e5', '#f5dbc6', '#f4b589', 0.56, 0, 0.38),
+    frame(17.999, '#dbd0e0', '#f4d5c0', '#f0a980', 0.6, 0, 0.22),
+    frame(18, '#141e42', '#2c2c56', '#8d4d62', 0.48, 0.2, 0),
+    frame(19, '#0a1228', '#172142', '#4f3255', 0.24, 0.72, 0),
     { h: 20.5, ...NIGHT },
     { h: 24, ...NIGHT },
   ];
 
-  // Dark system theme: the same nights, with a deep blue day.
+  // Nocturne / dark sky palette: deep obsidian nights with a royal sapphire day.
   const DARK = [
     { h: 0, ...NIGHT },
-    { h: 4.5, ...NIGHT, top: '#080d1b', bottom: '#131c35' },
-    frame(5.5, '#0d1530', '#1d2547', '#7a4558', 0.35, 0.45, 0),
-    frame(6.5, '#142449', '#262c4f', '#7a4a58', 0.4, 0.1, 0.1),
-    frame(8, '#17305a', '#1c2b4a', '#5a4a50', 0.15, 0, 0.3),
-    frame(12, '#1a3560', '#1d2f4f', '#5a4a50', 0, 0, 0.4),
-    frame(16, '#19305a', '#232b4a', '#6a4a40', 0.25, 0, 0.3),
-    frame(17.5, '#172650', '#2a2a4c', '#7a4558', 0.4, 0, 0.1),
-    frame(18.5, '#10183a', '#1f2446', '#5a3a50', 0.3, 0.3, 0),
+    { h: 4.5, ...NIGHT, top: '#070d1d', bottom: '#121d38' },
+    frame(5.5, '#0d1633', '#1e274a', '#8c4e64', 0.4, 0.45, 0),
+    frame(6.5, '#13244a', '#262c52', '#8a5260', 0.44, 0.14, 0.14),
+    frame(8, '#142f59', '#1b2b4c', '#685058', 0.18, 0, 0.34),
+    frame(12, '#173664', '#1b3054', '#5c4e56', 0, 0, 0.46),
+    frame(16, '#162f58', '#242b4e', '#745044', 0.28, 0, 0.34),
+    frame(17.5, '#152550', '#2b2a4e', '#864a5d', 0.44, 0, 0.14),
+    frame(18.5, '#0e173a', '#1e2348', '#5f3b54', 0.32, 0.34, 0),
     { h: 20, ...NIGHT },
     { h: 24, ...NIGHT },
+  ];
+
+  // Always-bright champagne palette when the user explicitly selects Daylight mode.
+  const DAY_ONLY = [
+    frame(0, '#cfd6e8', '#e7e8ee', '#dcd6ec', 0.25, 0, 0.15),
+    frame(5, '#cfd5e9', '#ece2de', '#eccab6', 0.42, 0, 0.2),
+    frame(6, '#cfd6ea', '#f4e0ce', '#f7c59f', 0.62, 0, 0.25),
+    frame(7.5, '#cddfed', '#f1eee4', '#f8e0be', 0.3, 0, 0.65),
+    frame(12, '#c8ddef', '#eff2ec', '#fff5dc', 0, 0, 1),
+    frame(16, '#cbd9ea', '#f2ebde', '#f7ddb4', 0.32, 0, 0.8),
+    frame(17.5, '#d9d3e5', '#f5dbc6', '#f4b589', 0.56, 0, 0.38),
+    frame(19.5, '#d1d5e7', '#e9e5ec', '#e5c8cc', 0.34, 0, 0.18),
+    frame(24, '#cfd6e8', '#e7e8ee', '#dcd6ec', 0.25, 0, 0.15),
   ];
 
   /* Colours are blended in OKLab so dusk doesn't pass through grey. */
@@ -82,10 +92,12 @@
   }
 
   function sample(frames, hour) {
-    const i = frames.findIndex((f) => f.h > hour);
-    const a = frames[i - 1];
-    const b = frames[i];
-    const t = (hour - a.h) / (b.h - a.h);
+    const h = ((hour % 24) + 24) % 24;
+    const i = frames.findIndex((f) => f.h > h);
+    const idx = i <= 0 ? 1 : i;
+    const a = frames[idx - 1];
+    const b = frames[idx];
+    const t = b.h === a.h ? 0 : (h - a.h) / (b.h - a.h);
     const mix = (key) => a[key] + (b[key] - a[key]) * t;
     return {
       top: blend(a.top, b.top, t),
@@ -97,18 +109,37 @@
     };
   }
 
+  function readSkyMode() {
+    try {
+      const saved = localStorage.getItem('world-time:sky-mode');
+      if (saved === 'auto' || saved === 'night' || saved === 'day') return saved;
+    } catch {}
+    return 'auto';
+  }
+
   const root = document.documentElement;
   const layer = document.getElementById('sky');
-  // const darkScheme = matchMedia('(prefers-color-scheme: dark)');
-  const darkScheme = { matches: false, addEventListener() {} };
-
   const themeColor = document.querySelector('meta[name="theme-color"]');
+  let skyMode = readSkyMode();
   let lastHour = 12;
   let painted = false;
 
+  function paletteForMode() {
+    if (skyMode === 'night') return DARK;
+    if (skyMode === 'day') return DAY_ONLY;
+    return LIGHT;
+  }
+
+  function themeFor(h) {
+    if (skyMode === 'night') return 'night';
+    if (skyMode === 'day') return 'day';
+    return h < 6 || h >= 18 ? 'night' : 'day';
+  }
+
   function apply(h, theme) {
-    const sky = sample(darkScheme.matches ? DARK : LIGHT, h);
+    const sky = sample(paletteForMode(), h);
     root.dataset.theme = theme;
+    root.dataset.skyMode = skyMode;
 
     // The sun crosses the page from sunrise at 06:00 to sunset at 18:00.
     const p = Math.min(1, Math.max(0, (h - 6) / 12));
@@ -119,33 +150,50 @@
     set('--glow-a', sky.glowA.toFixed(3));
     set('--stars', sky.stars.toFixed(3));
     set('--sun-a', sky.sun.toFixed(3));
-    set('--sun-x', `${(8 + 84 * p).toFixed(1)}%`);
-    set('--sun-y', `${(78 - 62 * Math.sin(Math.PI * p)).toFixed(1)}%`);
+    set('--sun-x', `${(10 + 80 * p).toFixed(1)}%`);
+    set('--sun-y', `${(78 - 60 * Math.sin(Math.PI * p)).toFixed(1)}%`);
     themeColor?.setAttribute('content', sky.top);
   }
 
-  // `hour` is the selected city's local time as a fraction, e.g. 18.75.
-  // `animate` fades the sky; `crossfade` also lets a day/night theme flip
-  // crossfade the whole page (skipped while the time slider is dragged).
   function paintSky(hour, animate = true, crossfade = true) {
     const h = ((hour % 24) + 24) % 24;
     lastHour = h;
-    const theme = darkScheme.matches || h < 6 || h >= 18 ? 'night' : 'day';
+    const theme = themeFor(h);
     const flips = painted && root.dataset.theme !== theme;
 
     if (flips && animate && crossfade && document.startViewTransition) {
-      // The page crossfade carries the sky too, so it snaps underneath.
       layer.classList.remove('is-fading');
       document.startViewTransition(() => apply(h, theme));
       return;
     }
-    // No fade on the very first paint, so the page never opens on the wrong sky.
     layer.classList.toggle('is-fading', animate && painted);
     painted = true;
     apply(h, theme);
   }
 
-  darkScheme.addEventListener('change', () => paintSky(lastHour));
+  function setSkyMode(mode, animate = true) {
+    if (mode !== 'auto' && mode !== 'night' && mode !== 'day') return;
+    skyMode = mode;
+    try {
+      localStorage.setItem('world-time:sky-mode', mode);
+    } catch {}
+    paintSky(lastHour, animate, true);
+  }
+
+  function getSkyMode() {
+    return skyMode;
+  }
+
+  // Returns live OKLab-blended sky colors for any city's local hour (used for cards).
+  function skyColorsForHour(hour) {
+    const h = ((hour % 24) + 24) % 24;
+    const isNight = h < 6 || h >= 18;
+    const sampled = sample(LIGHT, h);
+    return { ...sampled, isNight };
+  }
 
   window.paintSky = paintSky;
+  window.setSkyMode = setSkyMode;
+  window.getSkyMode = getSkyMode;
+  window.skyColorsForHour = skyColorsForHour;
 })();
